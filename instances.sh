@@ -1,7 +1,5 @@
 #!/bin/bash
-
 if [ -z "$2" ]; then
-
   case $1 in
     launch)
       for component in frontend catalogue cart user shipping payment mysql mongo rabbitmq redis; do
@@ -18,7 +16,6 @@ if [ -z "$2" ]; then
       done
     ;;
   esac
-
 else
   case $1 in
     launch)

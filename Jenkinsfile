@@ -37,7 +37,7 @@ pipeline {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
                         docker.image('bash:latest').inside("--entrypoint=''") {
-                            sh "which sh"
+                            sh "cat mkinv.sh"
                             sh "chmod +x mkinv.sh"
                             sh "sh mkinv.sh"
                         }

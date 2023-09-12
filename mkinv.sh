@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 > /tmp/inv
 for component in frontend catalogue cart user shipping payment mysql mongo redis rabbitmq; do

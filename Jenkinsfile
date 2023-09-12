@@ -20,7 +20,7 @@ pipeline {
                     script {
                         docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
                             sh "terraform -chdir=${tfDir} init -reconfigure"
-                            // sh "terraform -chdir=${tfDir} validate"
+                            sh "terraform -chdir=${tfDir} validate"
                             sh "terraform -chdir=${tfDir} plan -out=planfile"
                             sh "terraform -chdir=${tfDir} apply planfile"
                         }

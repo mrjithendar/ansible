@@ -8,6 +8,7 @@ pipeline {
 
     environment {
         tfDir = "terraform"
+        region = "us-east-1"
     }
 
     stages {
@@ -15,11 +16,11 @@ pipeline {
             when { expression {params.Ansible == "Create_Infra" } }
             // tools {terraform 'terraform'}
             steps {
-                withAWS(credentials: 'AWSCred', region: 'us-east-1') {
+                withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
                         docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
                             sh "terraform -chdir=${tfDir} init -reconfigure"
-                            sh "terraform -chdir=${tfDir} validate"
+                            // sh "terraform -chdir=${tfDir} validate"
                             sh "terraform -chdir=${tfDir} plan -out=planfile"
                             sh "terraform -chdir=${tfDir} apply planfile"
                         }

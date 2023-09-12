@@ -51,28 +51,28 @@ pipeline {
         stage ('Installing DB & Cache Service') {
             when { expression {params.Ansible == "Create_Infra"} }
             parallel {
-                withAWS(credentials: 'AWSCred', region: "${region}") {
                 stage ('Installing MySQL') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
-                        }
-                    }
-                stage ('Istalling MongoDB') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongo'
-                        }
-                    }
-                stage ('Installing RabbitMQ Server') {
-                    steps {
-                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
-                        }
-                    }
-                stage ('Installing redis') {
-                    steps {
-                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
+                    withAWS(credentials: 'AWSCred', region: "${region}") {
+                        steps {
+                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
                             }
                         }
-                    }
+                }
+                // stage ('Istalling MongoDB') {
+                //     steps {
+                //         ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongo'
+                //         }
+                //     }
+                // stage ('Installing RabbitMQ Server') {
+                //     steps {
+                //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
+                //         }
+                //     }
+                // stage ('Installing redis') {
+                //     steps {
+                //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
+                //             }
+                //         }
                 }
             }
 

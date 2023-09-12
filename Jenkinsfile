@@ -33,18 +33,18 @@ pipeline {
         stage('Make Ansible Inventery') {
             when { expression {params.Ansible == "Create_Infra" } }
             steps {
-                // withAWS(credentials: 'AWSCred', region: "${region}") {
+                withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
-                        docker.image('amazon/aws-cli:latest').inside("--entrypoint=''") {
+                        // docker.image('amazon/aws-cli:latest').inside("--entrypoint=''") {
                             sh "chmod +x mkinv.sh"
                             sh '''
                             awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh
                             '''
                             sh "chmod +x newmkinv.sh"
                             sh 'bash newmkinv.sh'
-                        }
+                        // }
                     }
-                // }
+                }
             }
         }
 

@@ -39,7 +39,7 @@ pipeline {
                         docker.image('bash:latest').inside("--entrypoint=''") {
                             sh "cat mkinv.sh"
                             sh "chmod +x mkinv.sh"
-                            sh './mkinv.sh'
+                            sh 'mkinv.sh'
                         }
                     }
                 }

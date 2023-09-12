@@ -1,6 +1,13 @@
-data "aws_route53_zone" "jithendar" {
-  name = "jithendar.com"
-  private_zone = true #true or false
+# data "aws_route53_zone" "roboshop" {
+#   name = "roboshop.com"
+#   private_zone = true #true or false
+# }
+
+resource "aws_route53_zone" "roboshop" {
+  name = "roboshop.com"
+  vpc {
+    vpc_id = "default"
+  }
 }
 
 resource "aws_route53_record" "roboshop" {

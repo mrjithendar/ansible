@@ -2,7 +2,6 @@ pipeline {
 
     agent any
 
-
     parameters {
         choice(name: 'Ansible', choices: ['Create_instances', 'Make_inventory', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
                }

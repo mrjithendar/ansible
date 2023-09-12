@@ -35,7 +35,7 @@ pipeline {
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
-                        docker.image('bash:latest').inside("--entrypoint=''") {
+                        docker.image('amazon/aws-cli:latest').inside("--entrypoint=''") {
                             sh "chmod +x mkinv.sh"
                             sh '''
                             awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh

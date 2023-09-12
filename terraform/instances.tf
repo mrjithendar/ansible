@@ -4,8 +4,8 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "terraform-state-rs-practice"
-    key    = "rs-instances/ansible.tfstate"
+    bucket = "jithendar"
+    key    = "roboshop/roboshop_absible"
     region = "us-east-1"
   }
 }
@@ -43,7 +43,7 @@ resource "null_resource" "make_inv_file" {
 
 data "aws_route53_zone" "jithendar" {
   name = "jithendar.com"
-  private_zone = false
+  private_zone = true #true or false
 }
 
 resource "aws_route53_record" "roboshop" {

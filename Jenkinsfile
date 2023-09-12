@@ -11,7 +11,7 @@ pipeline {
     }
 
     stages {
-        stage('terraform init & validate') {
+        stage('create Infra') {
             when { expression {params.Ansible == "Create_instances" } }
             // tools {terraform 'terraform'}
             steps {

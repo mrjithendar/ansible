@@ -6,13 +6,33 @@ pipeline {
         choice(name: 'Ansible', choices: ['Create_instances', 'Make_inventory', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
                }
 
+    environment {
+        tfDir = "terraform"
+    }
+
     stages {
-        stage ('Creating Instances') {
+        stage('terraform init & validate') {
             when { expression {params.Ansible == "Create_instances" } }
+            // tools {terraform 'terraform'}
             steps {
-                sh "sh instances.sh launch"
+                withAWS(credentials: 'AWS', region: 'us-east-1') {
+                    script {
+                        docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
+                            sh "terraform -chdir=${tfDir} init -reconfigure"
+                            sh "terraform -chdir=${tfDir} validate"
+                            sh "terraform -chdir=${tfDir} plan -out=planfile"
+                            sh "terraform -chdir=${tfDir} apply planfile"
+                        }
+                    }
+                }
             }
         }
+        // stage ('Creating Instances') {
+        //     when { expression {params.Ansible == "Create_instances" } }
+        //     steps {
+        //         sh "sh instances.sh launch"
+        //     }
+        // }
         stage ('Update Routes') {
             when { expression {params.Ansible == "Update_routes" } }
             steps {

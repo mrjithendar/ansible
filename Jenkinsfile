@@ -15,7 +15,7 @@ pipeline {
             when { expression {params.Ansible == "Create_instances" } }
             // tools {terraform 'terraform'}
             steps {
-                withAWS(credentials: 'AWS', region: 'us-east-1') {
+                withAWS(credentials: 'AWSCred', region: 'us-east-1') {
                     script {
                         docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
                             sh "terraform -chdir=${tfDir} init -reconfigure"

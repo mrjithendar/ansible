@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Ansible', choices: ['Create_Infra', 'Make_Inventory', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['Create_Infra', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
                }
 
     environment {
@@ -12,7 +12,7 @@ pipeline {
     }
 
     stages {
-        stage('create Infra') {
+        stage('Create Infra and Make Ansible Inventory') {
             when { expression {params.Ansible == "Create_Infra" } }
             // tools {terraform 'terraform'}
             steps {
@@ -30,7 +30,7 @@ pipeline {
             }
         }
         stage('Make Ansible Inventery') {
-            when { expression {params.Ansible == "Make_Inventory" } }
+            when { expression {params.Ansible == "Create_Infra" } }
             // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {

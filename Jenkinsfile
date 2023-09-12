@@ -19,11 +19,12 @@ pipeline {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
                         docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
-                            sh "terraform -chdir=${tfDir} init -reconfigure"
+                            sh "terraform --version"
+                            // sh "terraform -chdir=${tfDir} init -reconfigure"
                             // sh "terraform -chdir=${tfDir} destroy --auto-approve"
-                            sh "terraform -chdir=${tfDir} validate"
-                            sh "terraform -chdir=${tfDir} plan -out=planfile"
-                            sh "terraform -chdir=${tfDir} apply planfile"
+                            // sh "terraform -chdir=${tfDir} validate"
+                            // sh "terraform -chdir=${tfDir} plan -out=planfile"
+                            // sh "terraform -chdir=${tfDir} apply planfile"
                         }
                     }
                 }

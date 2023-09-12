@@ -55,7 +55,7 @@ pipeline {
                     steps {
                         withAWS(credentials: 'AWSCred', region: "${region}") {
                             script {
-                                docker.image('ansible/ansible:latest').inside("--entrypoint=''") {
+                                docker.image('alpine/ansible').inside("--entrypoint=''") {
                                     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
                                 }
                             }

@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Ansible', choices: ['Create_Infra', 'Make_inventory', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['Create_Infra', 'Make_Inventory', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
                }
 
     environment {
@@ -29,6 +29,19 @@ pipeline {
                 }
             }
         }
+        stage('Make Ansible Inventery') {
+            when { expression {params.Ansible == "Make_Inventory" } }
+            // tools {terraform 'terraform'}
+            steps {
+                withAWS(credentials: 'AWSCred', region: "${region}") {
+                    script {
+                        docker.image('amazon/aws-cli:latest').inside("--entrypoint=''") {
+                            sh "sh mkinv.sh"
+                        }
+                    }
+                }
+            }
+        }
         // stage ('Creating Instances') {
         //     when { expression {params.Ansible == "Create_Infra" } }
         //     steps {
@@ -42,7 +55,7 @@ pipeline {
         //     }
         // }
         // stage ('Make Inventory') {
-        //     when { expression {params.Ansible == "Make_inventory" } }
+        //     when { expression {params.Ansible == "Make_Inventory" } }
         //     steps {
         //         sh "sh mkinv.sh"
         //     }

@@ -47,7 +47,7 @@ pipeline {
         }
 
         stage ('Installing DB & Cache Service') {
-            when { expression {params.Ansible == "Invoke_playbook"|"Create_Infra"} }
+            when { expression {params.Ansible == "Create_Infra"} }
             parallel {
                 stage ('Installing MySQL') {
                     steps {

@@ -32,36 +32,18 @@ pipeline {
         }
         stage('Make Ansible Inventery') {
             when { expression {params.Ansible == "Create_Infra" } }
-            // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
                         docker.image('bash:latest').inside("--entrypoint=''") {
                             sh "chmod +x mkinv.sh"
-                            sh 'sh mkinv.sh'
+                            sh 'sh -c mkinv.sh'
                         }
                     }
                 }
             }
         }
-        // stage ('Creating Instances') {
-        //     when { expression {params.Ansible == "Create_Infra" } }
-        //     steps {
-        //         sh "sh instances.sh launch"
-        //     }
-        // }
-        // stage ('Update Routes') {
-        //     when { expression {params.Ansible == "Update_routes" } }
-        //     steps {
-        //         sh "sh instances.sh routes"
-        //     }
-        // }
-        // stage ('Make Inventory') {
-        //     when { expression {params.Ansible == "Make_Inventory" } }
-        //     steps {
-        //         sh "sh mkinv.sh"
-        //     }
-        // }
+
         stage ('Installing DB & Cache Service') {
             when { expression {params.Ansible == "Invoke_playbook" } }
             parallel {

@@ -53,15 +53,11 @@ pipeline {
             parallel {
                 stage ('Installing MySQL') {
                     steps {
-                        withAWS(credentials: 'AWSCred', region: "${region}") {
-                            script {
-                                docker.image('alpine/ansible').inside("--entrypoint=''") {
-                                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
-                                }
+                        script {
+                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
                             }
                         }
                     }
-                }
                 // stage ('Istalling MongoDB') {
                 //     steps {
                 //         ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongo'

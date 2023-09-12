@@ -53,26 +53,24 @@ pipeline {
             parallel {
                 stage ('Installing MySQL') {
                     steps {
-                        script {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
-                            }
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+                    }
+                }
+                stage ('Istalling MongoDB') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongo'
                         }
                     }
-                // stage ('Istalling MongoDB') {
-                //     steps {
-                //         ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongo'
-                //         }
-                //     }
-                // stage ('Installing RabbitMQ Server') {
-                //     steps {
-                //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
-                //         }
-                //     }
-                // stage ('Installing redis') {
-                //     steps {
-                //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
-                //             }
-                //         }
+                stage ('Installing RabbitMQ Server') {
+                    steps {
+                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
+                        }
+                    }
+                stage ('Installing redis') {
+                    steps {
+                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
+                        }
+                    }
                 }
             }
 

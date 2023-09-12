@@ -6,7 +6,7 @@
 resource "aws_route53_zone" "roboshop" {
   name = "roboshop.com"
   vpc {
-    vpc_id = "default"
+    vpc_id = "vpc-072846ab623e450ba" #default vpc id vpc-072846ab623e450ba
   }
 }
 

@@ -52,11 +52,15 @@ pipeline {
             when { expression {params.Ansible == "Create_Infra"} }
             parallel {
                 stage ('Installing MySQL') {
-                    withAWS(credentials: 'AWSCred', region: "${region}") {
-                        steps {
-                            ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+                    steps {
+                        withAWS(credentials: 'AWSCred', region: "${region}") {
+                            script {
+                                docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
+                                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+                                }
                             }
                         }
+                    }
                 }
                 // stage ('Istalling MongoDB') {
                 //     steps {

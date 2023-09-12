@@ -34,18 +34,18 @@ pipeline {
         //         sh "sh instances.sh launch"
         //     }
         // }
-        stage ('Update Routes') {
-            when { expression {params.Ansible == "Update_routes" } }
-            steps {
-                sh "sh instances.sh routes"
-            }
-        }
-        stage ('Make Inventory') {
-            when { expression {params.Ansible == "Make_inventory" } }
-            steps {
-                sh "sh mkinv.sh"
-            }
-        }
+        // stage ('Update Routes') {
+        //     when { expression {params.Ansible == "Update_routes" } }
+        //     steps {
+        //         sh "sh instances.sh routes"
+        //     }
+        // }
+        // stage ('Make Inventory') {
+        //     when { expression {params.Ansible == "Make_inventory" } }
+        //     steps {
+        //         sh "sh mkinv.sh"
+        //     }
+        // }
         stage ('Installing DB & Cache Service') {
             when { expression {params.Ansible == "Invoke_playbook" } }
             parallel {
@@ -71,7 +71,7 @@ pipeline {
                 }
               }
             }
-            stage ('Installing Roboshop Components') {
+            stage ('Installing Roboshop MicroServices') {
                 when { expression {params.Ansible == "Invoke_playbook" } }
                 parallel {
                 stage ('Installing Cart Service') {

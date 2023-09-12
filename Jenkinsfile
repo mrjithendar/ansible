@@ -36,6 +36,7 @@ pipeline {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     script {
                         docker.image('bash:latest').inside("--entrypoint=''") {
+                            sh "yum install jq -y"
                             sh '''#!/bin/sh
                             > /tmp/inv
                             for component in frontend catalogue cart user shipping payment mysql mongo redis rabbitmq; do

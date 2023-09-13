@@ -1,4 +1,4 @@
-- name: Include Common Role for OS Prereqs
+- name: Include Common Role for OS {{COMPONENT}}
   include_role:
     name: common
     tasks_from: os

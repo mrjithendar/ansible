@@ -1,14 +1,14 @@
 COMPONENT = [
-  "mysql",
-  "mongodb",
-  "redis",
-  "rabbitmq",
-  "cart",
-  "catalogue",
-  "shipping",
-  "payment",
-  "user",
-  "frontend"
+  "mysql" #,
+#   "mongodb",
+#   "redis",
+#   "rabbitmq",
+#   "cart",
+#   "catalogue",
+#   "shipping",
+#   "payment",
+#   "user",
+#   "frontend"
 ]
 
 INSTANCE_TYPE               = "t2.micro"

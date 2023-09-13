@@ -1,6 +1,6 @@
-DOMAIN: jithendar.com
+DOMAIN: roboshop.com
 ENV: dev
 PAT: ewyttvagpvt5q23uhwztn2uuaeutczrsc77cqukbdvtma6lacrua
-EIPADDRESS: elasticsearch.jithendar.com
-LIPADDRESS: logstash.jithendar.com
+EIPADDRESS: elasticsearch.roboshop.com
+LIPADDRESS: logstash.roboshop.com
 NodeExporter: 

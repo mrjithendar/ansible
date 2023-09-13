@@ -1,16 +1,16 @@
 COMPONENT = [
-        "mysql",
-        "mongodb",
-        "redis",
-        "rabbitmq",
-        "cart",
-        "catalogue",
-        "shipping",
-        "payment",
-        "user",
-        "frontend"
-    ]
+  "mysql",
+  "mongodb",
+  "redis",
+  "rabbitmq",
+  "cart",
+  "catalogue",
+  "shipping",
+  "payment",
+  "user",
+  "frontend"
+]
 
-INSTANCE_TYPE = "t2.micro"
-REGION        = "us-east-1"
-ENV           = "test"
+INSTANCE_TYPE               = "t2.micro"
+REGION                      = "us-east-1"
+private_instance_per_subnet = "1"

@@ -1,7 +1,7 @@
 resource "aws_route53_zone" "roboshop" {
   name = "roboshop.com"
   vpc {
-    vpc_id = "vpc-072846ab623e450ba"
+    vpc_id = aws_vpc.roboshop.id
   }
 }
 

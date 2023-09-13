@@ -1,7 +1,7 @@
-# - name: Include Common Role for OS {{COMPONENT}}
-#   include_role:
-#     name: common
-#     tasks_from: os
+- name: Include Common Role for OS {{COMPONENT}}
+  include_role:
+    name: common
+    tasks_from: os
    
 - name: Copy MySQL repo file
   template:

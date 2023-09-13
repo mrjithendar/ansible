@@ -1,4 +1,4 @@
-- name: set host name and shutdown behaviour
+- name: set host name and shutdown behaviour for {{COMPONENT}}
   shell: |
     set-hostname {{COMPONENT}}
     disable-auto-shutdown

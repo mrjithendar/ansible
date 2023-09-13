@@ -53,14 +53,15 @@ pipeline {
             parallel {
                 stage ('Installing MySQL') {
                     steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+                        sh "ansible-playbook roboshop.yml -i /tmp/inv"
+                        // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
                     }
                 }
-                stage ('Istalling MongoDB') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
-                        }
-                    }
+                // stage ('Istalling MongoDB') {
+                //     steps {
+                //         ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
+                //         }
+                //     }
                 // stage ('Installing RabbitMQ Server') {
                 //     steps {
                 //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'

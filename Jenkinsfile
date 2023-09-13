@@ -58,7 +58,7 @@ pipeline {
                 }
                 stage ('Istalling MongoDB') {
                     steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongo'
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
                         }
                     }
                 stage ('Installing RabbitMQ Server') {

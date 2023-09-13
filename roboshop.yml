@@ -8,10 +8,10 @@
 
     - name: Load MongoDB Role
       import_role:
-        name: mongo
-      when: component == "mongo"
+        name: mongodb
+      when: component == "mongodb"
       tags:
-        - mongo
+        - mongodb
     
     - name: Load MySQL Role
       import_role:

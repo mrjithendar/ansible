@@ -1,7 +1,12 @@
-- name: Include Common Role for {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
+# - name: Include Common Role for OS {{COMPONENT}}
+#   include_role:
+#     name: common
+#     tasks_from: os
+
+- name: set host name and shutdown behaviour for {{COMPONENT}}
+  shell: |
+    set-hostname {{COMPONENT}}
+    disable-auto-shutdown
 
 - name: Adding Repo files
   yum: 

@@ -53,7 +53,8 @@ pipeline {
             parallel {
                 stage ('Installing MySQL') {
                     steps {
-                        sh "ansible-playbook roboshop.yml -i /tmp/inv"
+                        ansiblePlaybook become: true, credentialsId: 'roboShop', installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+                        // sh "ansible-playbook roboshop.yml -i /tmp/inv"
                         // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
                     }
                 }

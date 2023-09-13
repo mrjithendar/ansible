@@ -8,7 +8,7 @@ resource "aws_instance" "instance" {
   ami           = data.aws_ami.AMI.id
   instance_type = var.INSTANCE_TYPE
   vpc_security_group_ids = [ aws_security_group.roboshop.id ]
-  subnet_id = aws_subnet.private_subnets[0].id
+  subnet_id = aws_subnet.public_subnets.id #aws_subnet.private_subnets[0].id
   user_data = "set hostname ${element(var.COMPONENT, count.index)}"
   tags = (merge(local.common_tags, tomap({
     "Name"    = "${element(var.COMPONENT, count.index)}",

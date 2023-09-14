@@ -6,17 +6,24 @@
   # Become is nothing but a sudo in CLI, Also this become can be used in task level also
   tasks:
 
-    - name: Installing NGiNX Server
-      yum:
-        name: nginx
-        state: latest
-    - name: Starting nginx services
-      systemd: 
-        daemon_reload: yes
-        enabled: yes
-        state: restarted
-        name: nginx
-      ignore_errors: yes
+    - name: Load Frontend Role
+      import_role:
+        name: frontend
+      when: component == "frontend"
+      tags:
+        - frontend
+
+    # - name: Installing NGiNX Server
+    #   yum:
+    #     name: nginx
+    #     state: latest
+    # - name: Starting nginx services
+    #   systemd: 
+    #     daemon_reload: yes
+    #     enabled: yes
+    #     state: restarted
+    #     name: nginx
+    #   ignore_errors: yes
 
     # - name: Load MongoDB Role
     #   import_role:
@@ -81,9 +88,4 @@
     #   tags:
     #    - rabbitmq
 
-    # - name: Load Frontend Role
-    #   import_role:
-    #     name: frontend
-    #   when: component == "frontend"
-    #   tags:
-    #     - frontend
+    

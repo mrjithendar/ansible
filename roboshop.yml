@@ -23,12 +23,12 @@
     #   tags:
     #     - frontend
 
-    # - name: Load Frontend Role
-    #   import_role:
-    #     name: frontend
-    #   when: component == "frontend"
-    #   tags:
-    #     - frontend
+    - name: Load Frontend Role
+      include_role:
+        name: frontend
+      when: component == "frontend"
+      tags:
+        - frontend
 
     - name: Load MongoDB Role
       import_role:

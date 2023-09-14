@@ -9,7 +9,7 @@
     - name: Load Frontend Role
       import_role:
         name: frontend
-        tasks_from: frontend
+        tasks_from: main.yml
       # when: component == "frontend"
       # tags:
       #   - frontend

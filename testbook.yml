@@ -7,8 +7,8 @@
         state: latest
     - name: Starting nginx services
       systemd: 
-      daemon_reload: yes
-      enabled: yes
-      state: restarted
-      name: nginx
-      ignore_errors: yes
+        daemon_reload: yes
+        enabled: yes
+        state: restarted
+        name: nginx
+        ignore_errors: yes

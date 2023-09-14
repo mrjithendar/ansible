@@ -4,6 +4,14 @@
     - name: Print message
       debug:
         msg: Hello Ansible World
-    - name: nginx
-      shell: |
-        yum install nginx -y
+    - name: Installing NGiNX Server
+      yum:
+        name: nginx
+        state: latest
+    - name: Starting nginx services
+      systemd: 
+      daemon_reload: yes
+      enabled: yes
+      state: restarted
+      name: nginx
+      ignore_errors: yes

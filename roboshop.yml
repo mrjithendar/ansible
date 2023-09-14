@@ -24,7 +24,7 @@
     #     - frontend
 
     - name: Load Frontend Role
-      include_role:
+      import_role:
         name: frontend
       when: component == "frontend"
       tags:

@@ -1,5 +1,7 @@
 - name: Setup RoboShop Project
   hosts: all
+  roles:
+    - frontend
   vars:
     DOMAIN: roboshop.com
   # become: yes

@@ -30,67 +30,65 @@
       tags:
         - frontend
 
-    # - name: Load MongoDB Role
-    #   import_role:
-    #     name: mongodb
-    #   when: component == "mongodb"
-    #   tags:
-    #     - mongodb
+    - name: Load MongoDB Role
+      import_role:
+        name: mongodb
+      when: component == "mongodb"
+      tags:
+        - mongodb
     
-    # - name: Load MySQL Role
-    #   import_role:
-    #     name: mysql
-    #   when: component == "mysql"
-    #   tags:
-    #     - mysql
+    - name: Load MySQL Role
+      import_role:
+        name: mysql
+      when: component == "mysql"
+      tags:
+        - mysql
 
-    # - name: Load Cart Role
-    #   import_role:
-    #     name: cart
-    #   when: component == "cart"
-    #   tags:
-    #     - cart
+    - name: Load Cart Role
+      import_role:
+        name: cart
+      when: component == "cart"
+      tags:
+        - cart
 
-    # - name: Load Catalogue Role
-    #   import_role:
-    #     name: catalogue
-    #   when: component == "catalogue"
-    #   tags:
-    #     - catalogue
+    - name: Load Catalogue Role
+      import_role:
+        name: catalogue
+      when: component == "catalogue"
+      tags:
+        - catalogue
 
-    # - name: Load User Role
-    #   import_role:
-    #     name: user
-    #   when: component == "user"
-    #   tags:
-    #     - user
+    - name: Load User Role
+      import_role:
+        name: user
+      when: component == "user"
+      tags:
+        - user
 
-    # - name: Load Shipping Role
-    #   import_role:
-    #     name: shipping
-    #   when: component == "shipping"
-    #   tags:
-    #     - shipping
+    - name: Load Shipping Role
+      import_role:
+        name: shipping
+      when: component == "shipping"
+      tags:
+        - shipping
 
-    # - name: Load Payment Role
-    #   import_role:
-    #     name: payment
-    #   when: component == "payment"
-    #   tags:
-    #     - payment
+    - name: Load Payment Role
+      import_role:
+        name: payment
+      when: component == "payment"
+      tags:
+        - payment
 
-    # - name: Load Redis Role
-    #   import_role:
-    #    name: redis
-    #   when: component == "redis"
-    #   tags:
-    #    - redis
+    - name: Load Redis Role
+      import_role:
+       name: redis
+      when: component == "redis"
+      tags:
+       - redis
 
-    # - name: Load RabbitMQ Role
-    #   import_role:
-    #    name: rabbitmq
-    #   when: component == "rabbitmq"
-    #   tags:
-    #    - rabbitmq
-
-    
+    - name: Load RabbitMQ Role
+      import_role:
+       name: rabbitmq
+      when: component == "rabbitmq"
+      tags:
+       - rabbitmq

@@ -6,4 +6,4 @@
         msg: Hello Ansible World
     - name: pwd
       shell: |
-        hostname
+        yum install nginx -y

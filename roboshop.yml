@@ -10,8 +10,8 @@
       import_role:
         name: frontend
       # when: component == "frontend"
-      # tags:
-      #   - frontend
+      tags:
+        - frontend
 
     # - name: Installing NGiNX Server
     #   yum:

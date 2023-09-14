@@ -11,4 +11,4 @@
         enabled: yes
         state: restarted
         name: nginx
-        ignore_errors: yes
+      ignore_errors: yes

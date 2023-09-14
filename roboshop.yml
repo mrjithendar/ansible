@@ -26,6 +26,9 @@
         state: restarted
         name: nginx
       ignore_errors: yes
+      when: component == "frontend"
+      tags:
+        - frontend
 
     # - name: Load MongoDB Role
     #   import_role:

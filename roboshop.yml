@@ -7,8 +7,9 @@
   tasks:
 
     - name: Load Frontend Role
-      ansible.builtin.import_role:
+      import_role:
         name: frontend
+        tasks_from: frontend
       # when: component == "frontend"
       # tags:
       #   - frontend

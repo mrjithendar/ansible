@@ -1,5 +1,5 @@
-COMPONENT = [
-  "mysql" #,
+# COMPONENT = [
+#   "mysql",
 #   "mongodb",
 #   "redis",
 #   "rabbitmq",
@@ -9,8 +9,9 @@ COMPONENT = [
 #   "payment",
 #   "user",
 #   "frontend"
-]
+# ]
 
+COMPONENT                   = "frontend"
 INSTANCE_TYPE               = "t2.micro"
 REGION                      = "us-east-1"
 private_instance_per_subnet = "1"

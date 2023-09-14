@@ -2,14 +2,14 @@
   hosts: all
   vars:
     DOMAIN: roboshop.com
-  become: yes
+  # become: yes
   # Become is nothing but a sudo in CLI, Also this become can be used in task level also
   tasks:
 
     - name: Load Frontend Role
       import_role:
         name: frontend
-      # when: component == "frontend"
+      when: component == "frontend"
       tags:
         - frontend
 

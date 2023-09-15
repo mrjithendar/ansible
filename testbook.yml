@@ -1,14 +1,14 @@
----
-- hosts: all
-  tasks:
-    - name: Installing NGiNX Server
-      yum:
-        name: nginx
-        state: latest
-    - name: Starting nginx services
-      systemd: 
-        daemon_reload: yes
-        enabled: yes
-        state: restarted
-        name: nginx
-      ignore_errors: yes
+- Name: Install NGiNx Web Server
+  hosts: all
+    tasks:
+      - name: Installing NGiNX Server
+        yum:
+          name: nginx
+          state: latest
+      - name: Starting nginx services
+        systemd: 
+          daemon_reload: yes
+          enabled: yes
+          state: restarted
+          name: nginx
+        ignore_errors: yes

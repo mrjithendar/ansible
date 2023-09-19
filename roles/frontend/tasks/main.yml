@@ -24,12 +24,9 @@
     path: /usr/share/nginx/html
 
 - name: Deploying WebApplication (frontend server)
-  # archive:
-  #   src: static/frontend.zip
-  #   dest: /tmp/frontend
   copy:
-    src: static/frontend.zip
-    dest: /usr/share/nginx/html
+    src: static/
+    dest: /usr/share/nginx/html/
     remote_src: no
 
 # - name: Move Artifiact Files /usr/share/nginx/html/

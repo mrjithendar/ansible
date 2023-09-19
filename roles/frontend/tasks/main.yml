@@ -23,9 +23,9 @@
     state: directory
     path: /usr/share/nginx/html
 
-- name: List files in roles/forntend/files/static/frontend
+- name: List files in roles/forntend/files/static/
   find:
-    path: roles/forntend/files/static/frontend
+    path: roles/forntend/files/static/
     recurse: yes
     file_type: any
   register: files_to_copy

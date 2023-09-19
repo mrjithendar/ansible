@@ -30,6 +30,14 @@ resource "aws_security_group" "roboshop" {
     # ipv6_cidr_blocks = [aws_vpc.roboshop.ipv6_cidr_block]
   }
 
+  ingress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   egress {
     from_port        = 0
     to_port          = 0

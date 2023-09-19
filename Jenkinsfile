@@ -18,16 +18,12 @@ pipeline {
             // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
-                    // script {
-                        // docker.image('hashicorp/terraform:latest').inside("--entrypoint=''") {
                     sh "terraform --version"
                     sh "terraform -chdir=${tfDir} init -reconfigure"
                     // sh "terraform -chdir=${tfDir} destroy --auto-approve"
                     sh "terraform -chdir=${tfDir} validate"
                     sh "terraform -chdir=${tfDir} plan -out=planfile"
                     sh "terraform -chdir=${tfDir} apply planfile"
-                        // }
-                    // }
                 }
             }
         }
@@ -36,14 +32,12 @@ pipeline {
             when { expression {params.Ansible == "Create_Infra" } }
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
-                    script {
-                        sh "chmod +x mkinv.sh"
-                        sh '''
-                        awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh
-                        '''
-                        sh "chmod +x newmkinv.sh"
-                        sh 'bash newmkinv.sh'
-                    }
+                    sh "chmod +x mkinv.sh"
+                    sh '''
+                    awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh
+                    '''
+                    sh "chmod +x newmkinv.sh"
+                    sh 'bash newmkinv.sh'
                 }
             }
         }

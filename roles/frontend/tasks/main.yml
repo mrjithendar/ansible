@@ -23,20 +23,20 @@
     state: directory
     path: /usr/share/nginx/html
 
-- name: List files in roles/forntend/files/static/
-  find:
-    path: roles/forntend/files/static/
-    recurse: no
-    file_type: any
-  register: files_to_copy
+- name: archive web files
+  archive: 
+    path: html
+    src: /tmp/frontend.zip
+    format: zip
+
 
 - name: Deploying WebApplication (frontend server)
   copy:
-    src: "{{ item }}" 
+    src: /tmp/frontend.zip
     dest: /usr/share/nginx/html/
     remote_src: no
-  with_items:
-   - "{{ files_to_copy.stdout_lines }}"
+  # with_items:
+  #  - "{{ files_to_copy.stdout_lines }}"
 
 # - name: Move Artifiact Files /usr/share/nginx/html/
 #   shell: |

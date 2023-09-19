@@ -7,13 +7,12 @@ for component in frontend catalogue cart user shipping payment mysql mongodb red
         fi
 done
 
-echo "Ansible Inventory"
 
 echo "Ansible Inventory:::"
 ansible-inventory --list -y
 
-echo "Ping test on Ansible Inventory:::"
-ansible all -m ping -u root
+# echo "Ping test on Ansible Inventory:::"
+# ansible all -m ping -u root
 
 #ansible all -a "df -h" -u root
 #ansible all -m apt -a "name=vim state=latest" -u root

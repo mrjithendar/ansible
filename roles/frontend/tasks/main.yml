@@ -23,18 +23,8 @@
     state: directory
     path: /usr/share/nginx/html
 
-- name: archive web files
-  archive: 
-    path: 
-    - roles/frontend/files/html/cart.html
-    dest: /tmp/frontend.zip
-    format: zip
-
 - name: Deploying WebApplication (frontend server)
-  copy:
-    src: /tmp/frontend.zip
-    dest: /usr/share/nginx/html/
-    remote_src: no
+  shell: cp -R roles/frontend/files/html /usr/share/nginx/html
 
 - name: Setup /etc/nginx/default.d/roboshop.conf
   template:

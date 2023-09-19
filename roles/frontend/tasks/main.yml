@@ -27,7 +27,7 @@
   archive: 
     path: 
     - html/*
-    src: /tmp/frontend.zip
+    dest: /tmp/frontend.zip
     format: zip
 
 
@@ -36,16 +36,6 @@
     src: /tmp/frontend.zip
     dest: /usr/share/nginx/html/
     remote_src: no
-  # with_items:
-  #  - "{{ files_to_copy.stdout_lines }}"
-
-# - name: Move Artifiact Files /usr/share/nginx/html/
-#   shell: |
-#     cd /usr/share/nginx/html
-#     mv static/* .
-#     rm -rf static
-
-#mv localhost.conf /etc/nginx/default.d/roboshop.conf
 
 - name: Setup /etc/nginx/default.d/roboshop.conf
   template:

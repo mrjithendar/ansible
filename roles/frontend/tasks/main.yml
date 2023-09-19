@@ -26,8 +26,8 @@
 - name: archive web files
   archive: 
     path: 
-    - roles/frontend/files/html/*
-    # dest: /tmp/frontend.zip
+    - roles/frontend/files/html/cart.html
+    dest: /tmp/frontend.zip
     format: zip
 
 - name: Deploying WebApplication (frontend server)

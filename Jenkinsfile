@@ -52,21 +52,21 @@ pipeline {
                         // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
                     }
                 }
-                // stage ('Istalling MongoDB') {
-                //     steps {
-                //         ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
-                //         }
-                //     }
-                // stage ('Installing RabbitMQ Server') {
-                //     steps {
-                //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
-                //         }
-                //     }
-                // stage ('Installing redis') {
-                //     steps {
-                //     ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
-                //         }
-                //     }
+                stage ('Istalling MongoDB') {
+                    steps {
+                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
+                        }
+                    }
+                stage ('Installing RabbitMQ Server') {
+                    steps {
+                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
+                        }
+                    }
+                stage ('Installing redis') {
+                    steps {
+                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
+                        }
+                    }
                 }
             }
 

@@ -28,7 +28,7 @@
   #   src: static/frontend.zip
   #   dest: /tmp/frontend
   copy:
-    src: static
+    src: static/frontend.zip
     dest: /usr/share/nginx/html
     remote_src: no
 

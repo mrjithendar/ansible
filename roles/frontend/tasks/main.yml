@@ -1,7 +1,7 @@
-# - name: Include Common Role for OS {{COMPONENT}}
-#   include_role:
-#     name: common
-#     tasks_from: os
+- name: Include Common Role for OS {{COMPONENT}}
+  include_role:
+    name: common
+    tasks_from: os
 
 # - name: set host name and shutdown behaviour for {{COMPONENT}}
 #   shell: |
@@ -24,9 +24,9 @@
     path: /usr/share/nginx/html
 
 - name: Deploying WebApplication (frontend server)
-  ansible.builtin.copy:
-    src: static
-    dest: /usr/share/nginx/html
+  copy:
+    src: static/login.html
+    dest: /usr/share/nginx/html/login.html
     remote_src: no
 
 # - name: Move Artifiact Files /usr/share/nginx/html/

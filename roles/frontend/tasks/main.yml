@@ -1,27 +1,27 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
+# - name: Include Common Role for OS {{COMPONENT}}
+#   include_role:
+#     name: common
+#     tasks_from: os
 
 # - name: set host name and shutdown behaviour for {{COMPONENT}}
 #   shell: |
 #     set-hostname {{COMPONENT}}
 #     disable-auto-shutdown
    
-- name: Installing NGiNX Server
-  yum:
-    name: nginx
-    state: latest
+# - name: Installing NGiNX Server
+#   yum:
+#     name: nginx
+#     state: latest
 
-- name: Delete default NGiNX Content
-  file:
-    state: absent
-    path: /usr/share/nginx/html
+# - name: Delete default NGiNX Content
+#   file:
+#     state: absent
+#     path: /usr/share/nginx/html
 
-- name: Create NGiNX Deirecory
-  file:
-    state: directory
-    path: /usr/share/nginx/html
+# - name: Create NGiNX Deirecory
+#   file:
+#     state: directory
+#     path: /usr/share/nginx/html
 
 - name: Deploying WebApplication (frontend server)
   copy:

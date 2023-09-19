@@ -24,7 +24,7 @@
     path: /usr/share/nginx/html
 
 - name: Deploying WebApplication (frontend server)
-  shell: cp -R roles/frontend/files/html /usr/share/nginx/html
+  shell: cp -r roles/frontend/files/html/ /usr/share/nginx/html/
 
 - name: Setup /etc/nginx/default.d/roboshop.conf
   template:

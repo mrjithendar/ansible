@@ -5,7 +5,7 @@
   #   - frontend
   vars:
     DOMAIN: roboshop.com
-  # become: yes
+  become: yes
   # Become is nothing but a sudo in CLI, Also this become can be used in task level also
   tasks:
 

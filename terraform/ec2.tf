@@ -14,7 +14,7 @@ resource "aws_instance" "instance" {
     aws_subnet.private_subnets, 
     aws_subnet.public_subnets 
     ]
-  key_name = aws_key_pair.roboshop.key_name
+  key_name      = "roboshop"
   count         = length(var.COMPONENT)
   ami           = "ami-04cb4ca688797756f" #data.aws_ami.AMI.id
   instance_type = var.INSTANCE_TYPE

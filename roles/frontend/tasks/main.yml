@@ -27,7 +27,7 @@
   archive: 
     path: 
     - roles/frontend/files/html/
-    dest: /tmp/frontend.zip
+    # dest: /tmp/frontend.zip
     format: zip
 
 - name: Deploying WebApplication (frontend server)

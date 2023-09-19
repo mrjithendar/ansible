@@ -24,7 +24,10 @@
     path: /usr/share/nginx/html
 
 - name: Deploying WebApplication (frontend server)
-  shell: cp -r /root/ansible/roles/frontend/files/html/ /usr/share/nginx/html/
+  copy:
+    src: html
+    dest: /usr/share/nginx/html
+    force: yes
 
 - name: Setup /etc/nginx/default.d/roboshop.conf
   template:

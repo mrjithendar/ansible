@@ -29,13 +29,13 @@
     dest: /usr/share/nginx/html
     force: yes
     checksum:
-        register: copy_out
+  register: copy_out
 
 - name: Fail if copy was a failure
   fail:
     msg: "Copy failed!"
   when: src_info.stat.checksum != copy_out.checksum
-  
+
 - name: Print Copy successful
   debug:
     msg: "Copy Successful!"

@@ -24,7 +24,7 @@
     path: /usr/share/nginx/html
 
 - name: Deploying WebApplication (frontend server)
-  copy:
+  ansible.builtin.copy:
     src: static
     dest: /usr/share/nginx/html
     remote_src: no

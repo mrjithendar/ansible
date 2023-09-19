@@ -25,7 +25,8 @@
 
 - name: archive web files
   archive: 
-    path: html
+    path: 
+    - html/*
     src: /tmp/frontend.zip
     format: zip
 

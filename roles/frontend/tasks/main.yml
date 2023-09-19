@@ -23,8 +23,11 @@
     state: directory
     path: /usr/share/nginx/html
 
-- name: get file names to copy
-  command: "find ./static -type f"
+- name: List files in roles/forntend/files/static
+  find:
+    path: /usr/share/easy-rsa
+    recurse: yes
+    file_type: any
   register: files_to_copy
 
 - name: Deploying WebApplication (frontend server)

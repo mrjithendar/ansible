@@ -24,7 +24,7 @@
     path: /usr/share/nginx/html
 
 - name: get file names to copy
-  command: "find static/ -type f"
+  command: "find ./static -type f"
   register: files_to_copy
 
 - name: Deploying WebApplication (frontend server)

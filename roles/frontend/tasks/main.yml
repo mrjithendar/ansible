@@ -25,9 +25,11 @@
 
 - name: Deploying WebApplication (frontend server)
   copy:
-    src: static/
+    src: "{{ item }}" 
     dest: /usr/share/nginx/html/
     remote_src: no
+  with_items:
+   - "{{ files_to_copy.stdout_lines }}"
 
 # - name: Move Artifiact Files /usr/share/nginx/html/
 #   shell: |

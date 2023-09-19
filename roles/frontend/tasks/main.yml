@@ -25,7 +25,7 @@
 
 - name: List files in roles/forntend/files/static/
   find:
-    path: roles/forntend/files/static/
+    path: ./roles/forntend/files/static/
     recurse: yes
     file_type: any
   register: files_to_copy

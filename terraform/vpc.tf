@@ -65,7 +65,7 @@ resource "aws_route_table_association" "pr_rta" {
 resource "aws_nat_gateway" "ngw" {
   connectivity_type = "public" # default is "public" can be private too
   allocation_id     = aws_eip.eip.id
-  subnet_id         = aws_subnet.public_subnets.id
+  subnet_id         = aws_subnet.public_subnet_1.id
   tags = (merge(local.common_tags, tomap({
     "Name"    = "${local.name_prefix}-nat-gateway-1-${var.environment}",
     "Purpose" = "${local.common_tags["Team"]} nat gateway"
@@ -87,8 +87,14 @@ resource "aws_route_table" "pl_rt" {
   })))
 }
 
-resource "aws_route_table_association" "pl_rta" {
+resource "aws_route_table_association" "pl_rta_1" {
   count          = length(data.aws_availability_zones.azs.names)
-  subnet_id      = aws_subnet.public_subnets.id
+  subnet_id      = aws_subnet.public_subnet_1.id
+  route_table_id = aws_route_table.pl_rt.id
+}
+
+resource "aws_route_table_association" "pl_rta_2" {
+  count          = length(data.aws_availability_zones.azs.names)
+  subnet_id      = aws_subnet.public_subnet_2.id
   route_table_id = aws_route_table.pl_rt.id
 }

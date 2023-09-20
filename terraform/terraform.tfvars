@@ -1,8 +1,8 @@
 COMPONENT = [
-  "mysql",
-  "redis",
+  # "mysql", alwasy removed
+  # "redis", alwasy removed
   # "mongodb",
-  "rabbitmq",
+  # "rabbitmq",
   # "cart",
   # "catalogue",
   # "shipping",

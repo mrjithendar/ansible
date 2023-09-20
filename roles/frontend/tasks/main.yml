@@ -25,7 +25,7 @@
 
 - name: Copy Web Files
   copy:
-    src: html/index.html
+    src: html
     force: yes
     dest: /usr/share/nginx/html/
 

@@ -3,6 +3,18 @@
 #   sensitive = true
 # }
 
-output "redis" {
-  value = aws_elasticache_cluster.redis.cache_nodes[0].address
+output "rds_endpoints" {
+  description = "Roboshop RDS Cluster Endpoints"
+  value = [
+    aws_rds_cluster.roboshop.endpoint,
+    aws_rds_cluster.roboshop.reader_endpoint
+  ]
+}
+
+output "redis_endpoints" {
+  description = "Roboshop Elasticache Redis Cluster Endpoints"
+  value = [
+    aws_elasticache_replication_group.roboshop.primary_endpoint_address,
+    aws_elasticache_replication_group.roboshop.reader_endpoint_address
+  ]
 }

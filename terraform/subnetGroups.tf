@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "roboshop" {
   })))
 }
 
-resource "aws_elasticache_subnet_group" "redis" {
+resource "aws_elasticache_subnet_group" "roboshop" {
   name       = "redis-subnetgroup-${var.environment}-roboshop"
   subnet_ids = aws_subnet.private_subnets.*.id
   tags = (merge(local.common_tags, tomap({

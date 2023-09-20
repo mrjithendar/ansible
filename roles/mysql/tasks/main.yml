@@ -2,11 +2,6 @@
   include_role:
     name: common
     tasks_from: os
-
-# - name: set host name and shutdown behaviour for {{COMPONENT}}
-#   shell: |
-#     set-hostname {{COMPONENT}}
-#     disable-auto-shutdown
    
 - name: Copy MySQL repo file
   template:
@@ -20,7 +15,7 @@
 
 - name: Install MySQL
   yum:
-    name: mysql-community-server
+    name: mysql-server #mysql-community-server
     state: present
 
 - name: Start MySQL
@@ -32,7 +27,7 @@
 - name: Check the MySQL Connectivity Using Standard Password
   shell: echo "show databases;" | mysql -u root -p'{{MYSQL_PASS}}'
   register: out
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Grab the default root password
   shell: grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}'

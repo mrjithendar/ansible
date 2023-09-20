@@ -50,20 +50,20 @@
 #   debug:
 #     msg: "Copy Successful!"
 
-- name: Setup /etc/nginx/default.d/roboshop.conf
-  template:
-    src: roboshop.conf
-    dest: /etc/nginx/default.d/roboshop.conf
+# - name: Setup /etc/nginx/default.d/roboshop.conf
+#   template:
+#     src: roboshop.conf
+#     dest: /etc/nginx/default.d/roboshop.conf
 
-- name: Update Nginx Configuration
-  template:
-   src: nginx.conf
-   dest: /etc/nginx/nginx.conf
+# - name: Update Nginx Configuration
+#   template:
+#    src: nginx.conf
+#    dest: /etc/nginx/nginx.conf
 
-- name: Starting nginx services
-  systemd: 
-   daemon_reload: yes
-   enabled: yes
-   state: restarted
-   name: nginx
-  ignore_errors: yes
+# - name: Starting nginx services
+#   systemd: 
+#    daemon_reload: yes
+#    enabled: yes
+#    state: restarted
+#    name: nginx
+#   ignore_errors: yes

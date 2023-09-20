@@ -27,7 +27,7 @@
   copy:
     src: html/index.html
     force: yes
-    dest: /usr/share/nginx/html
+    dest: /usr/share/nginx/html/
 
 # - name: Deploying WebApplication (frontend server)
 #   copy:

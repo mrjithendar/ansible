@@ -23,7 +23,7 @@
 #     state: directory
 #     path: /usr/share/nginx/html
 
-- name: make list of files
+- name: Copy Web Files
   copy:
     src: html/index.html
     force: yes

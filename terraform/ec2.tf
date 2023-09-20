@@ -1,12 +1,12 @@
-resource "tls_private_key" "roboshop" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+# resource "tls_private_key" "roboshop" {
+#   algorithm = "RSA"
+#   rsa_bits  = 4096
+# }
 
-resource "aws_key_pair" "roboshop" {
-  key_name   = var.key_name
-  public_key = tls_private_key.roboshop.public_key_openssh
-}
+# resource "aws_key_pair" "roboshop" {
+#   key_name   = var.key_name
+#   public_key = tls_private_key.roboshop.public_key_openssh
+# }
 
 resource "aws_instance" "instance" {
   depends_on = [ 

@@ -6,7 +6,8 @@
 - name: install epel-release
   yum:
     name: 
-      - epel-release
+      # - epel-release
+      - "{{EPEL_RELEASE7}}"
       - yum-utils
     state: present
 

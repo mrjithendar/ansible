@@ -1,3 +1,4 @@
 COMPONENT: redis
 DOMAIN: roboshop.com
 REDIS_REPO: "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+EPEL_RELEASE7: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"

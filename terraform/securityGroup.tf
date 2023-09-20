@@ -60,7 +60,7 @@ resource "aws_security_group" "rdssg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = aws_vpc.roboshop.cidr_block_associations.*.cidr_blocks
+    cidr_blocks = [aws_vpc.roboshop.cidr_block]
   }
   egress {
     description = "Allow all outbound traffic"
@@ -69,8 +69,8 @@ resource "aws_security_group" "rdssg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  tags = (merge(local.tags, tomap({
+  tags = (merge(local.common_tags, tomap({
     "Name"    = "roboshop-${var.environment}-rds-security-group",
-    "Purpose" = "${local.tags["Team"]} security group RDS cluster"
+    "Purpose" = "${local.common_tags["Team"]} security group RDS cluster"
   })))
 }

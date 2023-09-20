@@ -1,14 +1,14 @@
 COMPONENT = [
   # "mysql", alwasy removed
   # "redis", alwasy removed
-  # "mongodb",
-  # "rabbitmq",
-  # "cart",
-  # "catalogue",
-  # "shipping",
-  # "payment",
-  # "user",
-  # "frontend"
+  "mongodb",
+  "rabbitmq",
+  "cart",
+  "catalogue",
+  "shipping",
+  "payment",
+  "user",
+  "frontend"
 ]
 
 instancetype = "t2.micro"

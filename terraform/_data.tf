@@ -9,6 +9,15 @@ data "aws_ami" "ami" {
   }
 }
 
+// pull secrets
+data "aws_secretsmanager_secret" "rdscreds" {
+  name = "rdscreds"
+}
+
+data "aws_secretsmanager_secret_version" "rdscreds" {
+  secret_id = data.aws_secretsmanager_secret.creds.id
+}
+
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
 

@@ -26,8 +26,6 @@
 - name: make list of files
   copy:
     src: html/index.html
-    hidden: true
-    recurse: true
     force: yes
     dest: /usr/share/nginx/html
 

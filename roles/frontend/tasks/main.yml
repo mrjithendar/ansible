@@ -28,6 +28,7 @@
     src: html
     hidden: true
     recurse: true
+    force: yes
     dest: /usr/share/nginx/html
 
 # - name: Deploying WebApplication (frontend server)

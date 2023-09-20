@@ -109,5 +109,6 @@ pipeline {
                 ansiblePlaybook installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
                 // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
             }
-            }
+        }
     }
+}

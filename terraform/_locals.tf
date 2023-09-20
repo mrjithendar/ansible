@@ -10,6 +10,6 @@ locals {
     Createdby    = "Terraform"
     Role         = "Trainer"
   }
-  name_prefix = lower(var.environment)
+  name_prefix = "roboshop"
   name_suffix = var.environment
 }

@@ -5,10 +5,10 @@ resource "aws_rds_cluster_parameter_group" "roboshop" {
   lifecycle {
     create_before_destroy = true
   }
-  parameter {
-    name  = "log_statement"
-    value = "all"
-  }
+#   parameter {
+#     name  = "log_statement"
+#     value = "all"
+#   }
 #   parameter {
 #     name  = "log_min_duration_statement"
 #     value = "1"

@@ -26,6 +26,7 @@ resource "aws_elasticache_cluster" "redis" {
   parameter_group_name = aws_elasticache_parameter_group.redis.name
   engine_version       = "5.0.5"
   port                 = 6379
+  security_group_ids   = [ aws_security_group.roboshop.id ] 
   tags = (merge(local.common_tags, tomap({
     "Name"    = "redis-${var.environment}-roboshop",
     "Purpose" = "Roboshop App Component ${local.common_tags["Team"]}"

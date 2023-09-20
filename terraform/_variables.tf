@@ -1,5 +1,5 @@
 variable "COMPONENT" {}
-variable "INSTANCE_TYPE" {}
+variable "instancetype" {}
 variable "REGION" {}
 variable "keypair"{}
 variable "amazonami"{}

@@ -16,8 +16,8 @@ resource "aws_instance" "instance" {
     ]
   key_name      = var.keypair
   count         = length(var.COMPONENT)
-  ami           = data.aws_ami.AMI.id #var.amazonami #data.aws_ami.AMI.id
-  instance_type = var.INSTANCE_TYPE
+  ami           = data.aws_ami.ami.id #var.amazonami #data.aws_ami.ami.id
+  instance_type = var.instancetype
   vpc_security_group_ids = [ aws_security_group.roboshop.id ]
   subnet_id = aws_subnet.public_subnets.id #aws_subnet.private_subnets[0].id
   user_data = "set hostname ${element(var.COMPONENT, count.index)}"

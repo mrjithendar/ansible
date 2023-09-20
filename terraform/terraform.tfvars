@@ -11,7 +11,7 @@ COMPONENT = [
   "frontend"
 ]
 
-INSTANCE_TYPE               = "t2.micro"
+instancetype               = "t2.micro"
 REGION                      = "us-east-1"
 amazonami                   = "ami-04cb4ca688797756f"
 keypair                     = "roboshop"

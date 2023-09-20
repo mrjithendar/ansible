@@ -1,6 +1,6 @@
 #Centos-7-DevOps-Practice - ami-059e6ca6474628ef0
 
-data "aws_ami" "AMI" {
+data "aws_ami" "ami" {
   most_recent = true
   owners      = ["973714476881"]
   filter {

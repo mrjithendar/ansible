@@ -24,13 +24,11 @@
 #     path: /usr/share/nginx/html
 
 - name: make list of files
-  find:
-    paths: roles/frontend/files/html
+  copy:
+    src: html
     hidden: true
     recurse: true
-    file_type: any
-    patterns: '*.*'
-  register: webFiles
+    dest: /usr/share/nginx/html
 
 # - name: Deploying WebApplication (frontend server)
 #   copy:

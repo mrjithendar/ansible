@@ -14,9 +14,9 @@ resource "aws_instance" "instance" {
     aws_subnet.private_subnets, 
     aws_subnet.public_subnets 
     ]
-  key_name      = "roboshop"
+  key_name      = var.keypair
   count         = length(var.COMPONENT)
-  ami           = "ami-04cb4ca688797756f" #amazonlinux2 "ami-04cb4ca688797756f" #data.aws_ami.AMI.id
+  ami           = var.amazonami #amazonlinux2 "ami-04cb4ca688797756f" #data.aws_ami.AMI.id
   instance_type = var.INSTANCE_TYPE
   vpc_security_group_ids = [ aws_security_group.roboshop.id ]
   subnet_id = aws_subnet.public_subnets.id #aws_subnet.private_subnets[0].id

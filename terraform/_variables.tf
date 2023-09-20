@@ -1,6 +1,8 @@
 variable "COMPONENT" {}
 variable "INSTANCE_TYPE" {}
 variable "REGION" {}
+variable "keypair"{}
+variable "amazonami"{}
 
 variable "environment" {
   default = "test"

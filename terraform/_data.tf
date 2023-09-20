@@ -15,7 +15,7 @@ data "aws_secretsmanager_secret" "rdscreds" {
 }
 
 data "aws_secretsmanager_secret_version" "rdscreds" {
-  secret_id = data.aws_secretsmanager_secret.creds.id
+  secret_id = data.aws_secretsmanager_secret.rdscreds.id
 }
 
 data "aws_region" "current" {}

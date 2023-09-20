@@ -3,6 +3,7 @@ variable "instancetype" {}
 variable "REGION" {}
 variable "keypair"{}
 variable "amazonami"{}
+variable "centos8ami" {}
 
 variable "environment" {
   default = "test"

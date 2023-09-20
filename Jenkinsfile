@@ -19,11 +19,11 @@ pipeline {
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     sh "terraform --version"
-                    sh "terraform -chdir=${tfDir} init -reconfigure"
+                    // sh "terraform -chdir=${tfDir} init -reconfigure"
                     // sh "terraform -chdir=${tfDir} destroy --auto-approve"
-                    sh "terraform -chdir=${tfDir} validate"
-                    sh "terraform -chdir=${tfDir} plan -out=planfile"
-                    sh "terraform -chdir=${tfDir} apply planfile"
+                    // sh "terraform -chdir=${tfDir} validate"
+                    // sh "terraform -chdir=${tfDir} plan -out=planfile"
+                    // sh "terraform -chdir=${tfDir} apply planfile"
                 }
             }
         }

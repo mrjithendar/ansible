@@ -5,24 +5,12 @@ resource "aws_rds_cluster_parameter_group" "roboshop" {
   lifecycle {
     create_before_destroy = true
   }
-#   parameter {
-#     name  = "log_statement"
-#     value = "all"
-#   }
-#   parameter {
-#     name  = "log_min_duration_statement"
-#     value = "1"
-#   }
 }
 
 resource "aws_db_parameter_group" "roboshop" {
   depends_on = [aws_rds_cluster.roboshop]
   name       = "db-parameter-group-${var.environment}-roboshop"
   family     = "aurora-postgresql15"
-  parameter {
-    name  = "log_connections"
-    value = "1"
-  }
   lifecycle {
     create_before_destroy = true
   }
@@ -43,7 +31,7 @@ resource "aws_rds_cluster" "roboshop" {
   preferred_backup_window         = "07:00-09:00"
   skip_final_snapshot             = true
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.roboshop.name
-  vpc_security_group_ids          = [ aws_security_group.rdssg.id ]
+  vpc_security_group_ids          = [ aws_security_group.roboshoprds.id ]
 }
 
 resource "aws_rds_cluster_instance" "writer" {

@@ -8,7 +8,7 @@ resource "aws_vpc" "roboshop" {
     create_before_destroy = true
   }
   tags = (merge(local.common_tags, tomap({
-    "Name"    = "${local.name_prefix}-roboshop-vpc-${var.environment}",
+    "Name"    = "${local.name_prefix}-vpc-${var.environment}",
     "Purpose" = "vpc for ${local.common_tags["Team"]} vpc for eks"
   })))
 }
@@ -16,7 +16,7 @@ resource "aws_vpc" "roboshop" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.roboshop.id
   tags = (merge(local.common_tags, tomap({
-    "Name"    = "${local.name_prefix}-roboshop-igw-${var.environment}",
+    "Name"    = "${local.name_prefix}-igw-${var.environment}",
     "Purpose" = "Key for ${local.common_tags["Team"]} igw for roboshop app"
   })))
 }
@@ -30,9 +30,9 @@ resource "aws_subnet" "private_subnets" {
   map_public_ip_on_launch = false
 
   tags = (merge(local.common_tags, tomap({
-    "Name"                   = "${local.name_prefix}-roboshop-subnet-${var.environment}-${count.index + 1}",
+    "Name"                   = "${local.name_prefix}-subnet-${var.environment}-${count.index + 1}",
     "Purpose"                = "${local.common_tags["Team"]} subnet for roboshop app",
-    "karpenter.sh/discovery" = "${local.name_prefix}-roboshop-${local.name_suffix}"
+    "karpenter.sh/discovery" = "${local.name_prefix}-${local.name_suffix}"
   })))
 }
 
@@ -70,9 +70,9 @@ resource "aws_subnet" "public_subnets" {
   cidr_block              = "10.0.5.0/24" # "10.0.0.0/16"
   map_public_ip_on_launch = true
   tags = (merge(local.common_tags, tomap({
-    "Name"                   = "${local.name_prefix}-roboshop-public-subnet-${var.environment}-1",
+    "Name"                   = "${local.name_prefix}-public-subnet-${var.environment}-1",
     "Purpose"                = "${local.common_tags["Team"]} public subnet for roboshop app",
-    "karpenter.sh/discovery" = "${local.name_prefix}-roboshop-${local.name_suffix}"
+    "karpenter.sh/discovery" = "${local.name_prefix}-${local.name_suffix}"
   })))
 }
 

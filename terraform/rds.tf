@@ -7,7 +7,7 @@ resource "aws_rds_cluster_parameter_group" "mysql" {
 resource "aws_rds_cluster" "mysql" {
   cluster_identifier              = "mysql-cluster-${var.environment}-roboshop"
   engine                          = "aurora-mysql"
-  engine_version                  = "5.7.mysql_aurora.2.03.2"
+  engine_version                  =  "5.7.mysql_aurora.2.09.2" #old "5.7.mysql_aurora.2.03.2"
   database_name                   = "defaultdb"
   master_username                 = jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_USER"]
   master_password                 = jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_PASS"]
@@ -35,11 +35,3 @@ resource "null_resource" "import-mysql-schema" {
     EOF
   }
 }
-
-# resource "aws_route53_record" "jithendar" {
-#   name          = "${var.COMPONENT}.${data.aws_route53_zone.jithendar.name}"
-#   type          = "CNAME"
-#   ttl           = "300"
-#   zone_id       = data.aws_route53_zone.jithendar.zone_id
-#   records       = [aws_rds_cluster.mysql.endpoint]
-# }

@@ -14,3 +14,19 @@ resource "aws_route53_record" "roboshop" {
   ttl        = "300"
   records    = ["${element(aws_instance.instance, count.index)}".private_ip]
 }
+
+# resource "aws_route53_record" "redis" {
+#   name        = "${var.COMPONENT}.${data.aws_route53_zone.jithendar.name}"
+#   type        = "CNAME"
+#   zone_id     = data.aws_route53_zone.jithendar.zone_id
+#   ttl         = "300"
+#   records     = [aws_elasticache_cluster.redis.cache_nodes[0].address] 
+# }
+
+# resource "aws_route53_record" "jithendar" {
+#   name          = "${var.COMPONENT}.${data.aws_route53_zone.jithendar.name}"
+#   type          = "CNAME"
+#   ttl           = "300"
+#   zone_id       = data.aws_route53_zone.jithendar.zone_id
+#   records       = [aws_rds_cluster.mysql.endpoint]
+# }

@@ -96,7 +96,7 @@ resource "aws_route_table" "pl_rt" {
     gateway_id = aws_internet_gateway.igw.id
   }
   tags = (merge(local.common_tags, tomap({
-    "Name"    = "${local.name_prefix}-public-rt-${var.environment}",
+    "Name"    = "${local.name_prefix}-public-rt-${var.environment}"
     "Purpose" = "${local.common_tags["Team"]} public route table"
   })))
 }

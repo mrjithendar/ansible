@@ -106,7 +106,7 @@ pipeline {
         stage ('Installing Web Components') {
             when { expression {params.Ansible == "Create_Infra" } }
             steps {
-                ansiblePlaybook installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
+                ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'frontend'
                 // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
             }
         }

@@ -9,10 +9,10 @@ resource "aws_rds_cluster_parameter_group" "roboshop" {
     name  = "log_statement"
     value = "all"
   }
-  parameter {
-    name  = "log_min_duration_statement"
-    value = "1"
-  }
+#   parameter {
+#     name  = "log_min_duration_statement"
+#     value = "1"
+#   }
 }
 
 resource "aws_db_parameter_group" "roboshop" {

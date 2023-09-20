@@ -1,4 +1,8 @@
 resource "null_resource" "import-mysql-schema" {
+  depends_on = [ 
+    aws_rds_cluster_instance.reader,
+    aws_rds_cluster_instance.reader
+    ]
   provisioner "local-exec" {
     command = <<EOF
     sleep 600

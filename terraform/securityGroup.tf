@@ -51,3 +51,26 @@ resource "aws_security_group" "roboshop" {
     "Purpose" = "Roboshop App ${local.common_tags["Team"]}"
   })))
 }
+
+resource "aws_security_group" "rdssg" {
+  name   = "roboshop-${var.environment}-rds-security-group"
+  vpc_id = aws_vpc.roboshop.id
+  ingress {
+    description = "Allow TCP Traffic from EKS VPC"
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = aws_vpc.roboshop.cidr_block_associations.*.cidr_blocks
+  }
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = (merge(local.tags, tomap({
+    "Name"    = "roboshop-${var.environment}-rds-security-group",
+    "Purpose" = "${local.tags["Team"]} security group RDS cluster"
+  })))
+}

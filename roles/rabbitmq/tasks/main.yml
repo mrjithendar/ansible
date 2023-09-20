@@ -8,9 +8,15 @@
 #     set-hostname {{COMPONENT}}
 #     disable-auto-shutdown
    
-- name: Installing erlang package
+- name: Installing erlang repos
   shell: |
-    yum install {{Erlang}} -y
+    curl -s {{Erlang}} | sudo bash
+    yum clean all && yum -y makecache
+
+- name: Installing Erlang Package
+  yum: 
+    name: erlang
+    state: latest
 
 - name: Adding RabbitMQ Repo
   shell: |

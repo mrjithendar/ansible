@@ -3,10 +3,12 @@
     name: common
     tasks_from: os
 
-# - name: set host name and shutdown behaviour for {{COMPONENT}}
-#   shell: |
-#     set-hostname {{COMPONENT}}
-#     disable-auto-shutdown
+- name: install epel-release
+  yum:
+    name: 
+      - epel-release
+      - yum-utils
+    state: present
 
 - name: Adding Repo files
   yum: 
@@ -17,8 +19,6 @@
   yum:
     name:
       - redis
-      - epel-release 
-      - yum-utils
     state: latest
     enablerepo: remi
 

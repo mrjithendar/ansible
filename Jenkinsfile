@@ -32,6 +32,7 @@ pipeline {
             when { expression {params.Ansible == "Create_Infra" } }
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
+                    sh "sleep 10" // let the ec2 instances fully ready
                     sh "chmod +x mkinv.sh"
                     sh '''
                     awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh

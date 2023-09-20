@@ -1,0 +1,9 @@
+// TASK [redis : Adding Repo files] ***********************************************
+fatal: [34.229.141.210]: FAILED! => {"changed": false, "failures": [], "msg": "Depsolve Error occurred: \n Problem: conflicting requests\n  - nothing provides epel-release = 7 needed by remi-release-7.9-5.el7.remi.noarch", "rc": 1, "results": []}
+
+
+// TASK [rabbitmq : Installing RabbitMQ Server] ***********************************
+fatal: [54.144.201.32]: FAILED! => {"changed": false, "failures": [], "msg": "Depsolve Error occurred: \n Problem: cannot install the best candidate for the job\n  - nothing provides erlang >= 25.0 needed by rabbitmq-server-3.12.4-1.el8.noarch", "rc": 1, "results": []}
+
+// TASK [mysql : Install MySQL] ***************************************************
+fatal: [54.242.65.89]: FAILED! => {"changed": false, "failures": ["mysql-community-server All matches were filtered out by modular filtering for argument: mysql-community-server"], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}

@@ -16,17 +16,18 @@
 # - name: Delete default NGiNX Content
 #   file:
 #     state: absent
-#     path: /usr/share/nginx/html
+#     path: /usr/share/nginx/
 
 # - name: Create NGiNX Deirecory
 #   file:
 #     state: directory
-#     path: /usr/share/nginx/html
+#     path: /usr/share/nginx/
 
 - name: Copy Web Files
   copy:
     src: html
     force: yes
+    directory_mode: any
     dest: /usr/share/nginx/
 
 # - name: Deploying WebApplication (frontend server)

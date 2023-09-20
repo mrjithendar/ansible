@@ -23,12 +23,21 @@
 #     state: directory
 #     path: /usr/share/nginx/html
 
-- name: Deploying WebApplication (frontend server)
-  copy:
-    src: html/
-    dest: /usr/share/nginx/html/
-    force: yes
-    directory_mode: any
+- name: make list of files
+  find:
+    paths: roles/frontend/files/html
+    hidden: true
+    recurse: true
+    file_type: any
+    patterns: '*.*'
+  register: webFiles
+
+# - name: Deploying WebApplication (frontend server)
+#   copy:
+#     src: html/
+#     dest: /usr/share/nginx/html/
+#     force: yes
+#     directory_mode: any
   #   checksum:
   # register: copy_out
 

@@ -38,75 +38,76 @@ pipeline {
                     '''
                     sh "chmod +x newmkinv.sh"
                     sh 'bash newmkinv.sh'
-                    sh "chmod 600 roboshop.pem"
+                    sh "chmod 600 roboshop"
                 }
             }
         }
 
-        stage ('Installing DB & Cache Service') {
-            when { expression {params.Ansible == "Create_Infra"} }
-            parallel {
-                stage ('Installing MySQL') {
-                    steps {
-                        ansiblePlaybook become: true, credentialsId: 'roboShop', installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
-                        // sh "ansible-playbook roboshop.yml -i /tmp/inv"
-                        // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
-                    }
-                }
-                stage ('Istalling MongoDB') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
-                        }
-                    }
-                stage ('Installing RabbitMQ Server') {
-                    steps {
-                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
-                        }
-                    }
-                stage ('Installing redis') {
-                    steps {
-                    ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
-                        }
-                    }
-                }
-            }
+        // stage ('Installing DB & Cache Service') {
+        //     when { expression {params.Ansible == "Create_Infra"} }
+        //     parallel {
+        //         stage ('Installing MySQL') {
+        //             steps {
+        //                 ansiblePlaybook become: true, credentialsId: 'roboShop', installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+        //                 // sh "ansible-playbook roboshop.yml -i /tmp/inv"
+        //                 // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mysql'
+        //             }
+        //         }
+        //         stage ('Istalling MongoDB') {
+        //             steps {
+        //                 ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'mongodb'
+        //                 }
+        //             }
+        //         stage ('Installing RabbitMQ Server') {
+        //             steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
+        //                 }
+        //             }
+        //         stage ('Installing redis') {
+        //             steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'redis'
+        //             }
+        //         }
+        //     }
+        // }
 
-            stage ('Installing Roboshop MicroServices') {
-                when { expression {params.Ansible == "Create_Infra" } }
-                parallel {
-                stage ('Installing Cart Service') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'cart'
-                    }
-                }
-                stage ('Installing Catalogue Service') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'catalogue'
-                    }
-                }
-                stage ('Installing User Service') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'user'
-                    }
-                }
-                stage ('Installing Shipping Service') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'shipping'
-                    }
-                }
-                stage ('Installing Payment Service') {
-                    steps {
-                        ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'payment'
-                            }
-                        }
-                    }
-                }
-            stage ('Installing Web Components') {
-                when { expression {params.Ansible == "Create_Infra" } }
-                steps {
-                    ansiblePlaybook credentialsId: 'SSHkey', installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
-                    // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
-                }
+        // stage ('Installing Roboshop MicroServices') {
+        //     when { expression {params.Ansible == "Create_Infra" } }
+        //     parallel {
+        //     stage ('Installing Cart Service') {
+        //         steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'cart'
+        //         }
+        //     }
+        //     stage ('Installing Catalogue Service') {
+        //         steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'catalogue'
+        //         }
+        //     }
+        //     stage ('Installing User Service') {
+        //         steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'user'
+        //         }
+        //     }
+        //     stage ('Installing Shipping Service') {
+        //         steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'shipping'
+        //         }
+        //     }
+        //     stage ('Installing Payment Service') {
+        //         steps {
+        //             ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'payment'
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        stage ('Installing Web Components') {
+            when { expression {params.Ansible == "Create_Infra" } }
+            steps {
+                ansiblePlaybook installation: 'ansible', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
+                // ansiblePlaybook credentialsId: 'DevOps321', installation: 'ansibletool', inventory: '/tmp/inv', playbook: 'roboshop.yml', tags: 'frontend'
             }
-        }
+            }
     }

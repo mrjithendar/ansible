@@ -27,7 +27,6 @@
   copy:
     src: html
     force: yes
-    directory_mode: any
     dest: /usr/share/nginx/
 
 # - name: Deploying WebApplication (frontend server)

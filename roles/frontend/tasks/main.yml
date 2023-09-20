@@ -2,11 +2,6 @@
   include_role:
     name: common
     tasks_from: os
-
-- name: set host name and shutdown behaviour for {{COMPONENT}}
-  shell: |
-    set-hostname {{COMPONENT}}
-    disable-auto-shutdown
    
 - name: Installing NGiNX Server
   yum:

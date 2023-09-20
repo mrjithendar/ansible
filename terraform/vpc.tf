@@ -62,20 +62,6 @@ resource "aws_route_table_association" "pr_rta" {
   route_table_id = aws_route_table.pr_rt.id
 }
 
-# public subnet
-resource "aws_subnet" "public_subnets" {
-  # count                   = length(data.aws_availability_zones.azs.names)
-  vpc_id                  = aws_vpc.roboshop.id
-  availability_zone       = random_shuffle.az_list.result[1]
-  cidr_block              = "10.0.5.0/24" # "10.0.0.0/16"
-  map_public_ip_on_launch = true
-  tags = (merge(local.common_tags, tomap({
-    "Name"                   = "${local.name_prefix}-public-subnet-${var.environment}-1",
-    "Purpose"                = "${local.common_tags["Team"]} public subnet for roboshop app",
-    "karpenter.sh/discovery" = "${local.name_prefix}-${local.name_suffix}"
-  })))
-}
-
 resource "aws_nat_gateway" "ngw" {
   connectivity_type = "public" # default is "public" can be private too
   allocation_id     = aws_eip.eip.id

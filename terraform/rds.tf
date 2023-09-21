@@ -1,3 +1,11 @@
+output "rds_endpoints" {
+  description = "Roboshop RDS Cluster Endpoints"
+  value = [
+    aws_rds_cluster.roboshop.endpoint,
+    aws_rds_cluster.roboshop.reader_endpoint
+  ]
+}
+
 resource "aws_rds_cluster_parameter_group" "roboshop" {
   name        = "mysql-cluster-parameter-group-${var.environment}-roboshop"
   family      = "aurora-mysql8.0" #"aurora-mysql5.7"

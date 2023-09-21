@@ -16,7 +16,7 @@ resource "aws_subnet" "public_subnet_2" {
   # count                   = length(data.aws_availability_zones.azs.names)
   vpc_id                  = aws_vpc.roboshop.id
   availability_zone       = random_shuffle.az_list.result[0]
-  cidr_block              = "10.0.5.0/32" # "10.0.0.0/16"
+  cidr_block              = "10.0.6.0/24" # "10.0.0.0/16"
   map_public_ip_on_launch = true
   tags = (merge(local.common_tags, tomap({
     "Name"                   = "${local.name_prefix}-public-subnet-2-${var.environment}-1",

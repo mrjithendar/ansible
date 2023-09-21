@@ -1,3 +1,11 @@
+output "redis_endpoints" {
+  description = "Roboshop Elasticache Redis Cluster Endpoints"
+  value = [
+    aws_elasticache_replication_group.roboshop.primary_endpoint_address,
+    aws_elasticache_replication_group.roboshop.reader_endpoint_address
+  ]
+}
+
 resource "aws_elasticache_parameter_group" "roboshop" {
   name        = "${local.name_prefix}-elasticache-pg-${local.name_suffix}"
   family      = "redis7" #"redis5.0"

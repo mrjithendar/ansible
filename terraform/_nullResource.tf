@@ -23,7 +23,8 @@ resource "null_resource" "import_shipping_db" {
   depends_on = [ 
     aws_rds_cluster_instance.reader,
     aws_rds_cluster_instance.reader,
-    null_resource.extract_database
+    null_resource.extract_database,
+    null_resource.wait_for_rds
     ]
   provisioner "local-exec" {
     command = <<EOF

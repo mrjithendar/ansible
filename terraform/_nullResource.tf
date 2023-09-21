@@ -4,7 +4,7 @@ resource "null_resource" "extract_database" {
     always_run = "${timestamp()}"
   }
   provisioner "local-exec" {
-    command = "unzip _databases/shipping.zip"
+    command = "unzip -o _databases/shipping.zip"
   }
 }
 

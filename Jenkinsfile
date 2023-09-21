@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Ansible', choices: ['Create_Infra', 'Update_routes', 'Invoke_playbook'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['CreateApp', 'DeleteApp', 'Invoke_playbook'], description: 'Pick any action')
                }
 
     environment {
@@ -14,7 +14,7 @@ pipeline {
     stages {
 
         stage('Create Infra with Terraform') {
-            when { expression {params.Ansible == "Create_Infra" } }
+            when { expression {params.Ansible == "CreateApp" } }
             // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
@@ -29,8 +29,21 @@ pipeline {
             }
         }
 
+        stage('Delete Infra with Terraform') {
+            when { expression {params.Ansible == "DeleteApp" } }
+            // tools {terraform 'terraform'}
+            steps {
+                withAWS(credentials: 'AWSCred', region: "${region}") {
+                    sh "terraform --version"
+                    sh "terraform -chdir=${tfDir} init -reconfigure"
+                    sh "terraform -chdir=${tfDir} validate"
+                    sh "terraform -chdir=${tfDir} destroy --auto-approve"
+                }
+            }
+        }
+
         stage('Make Ansible Inventery') {
-            when { expression {params.Ansible == "Create_Infra" } }
+            when { expression {params.Ansible == "CreateApp" } }
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     sh "sleep 10" // let the ec2 instances fully ready
@@ -47,7 +60,7 @@ pipeline {
 
         stage ('Installing DB & Cache Service') {
             // Install MySQL MongoDB RabbitMQ Redis
-            when { expression {params.Ansible == "Create_Infra"} }
+            when { expression {params.Ansible == "CreateApp"} }
             parallel {
                 // stage ('Installing MySQL') {
                 //     steps {
@@ -74,7 +87,7 @@ pipeline {
 
         stage ('Installing Roboshop MicroServices') {
             // Cart Catalogue User Shipping
-            when { expression {params.Ansible == "Create_Infra" } }
+            when { expression {params.Ansible == "CreateApp" } }
             parallel {
             stage ('Installing Cart Service') {
                 steps {
@@ -106,7 +119,7 @@ pipeline {
 
         stage ('Installing Web Components') {
             // Nginx Web Server
-            when { expression {params.Ansible == "Create_Infra" } }
+            when { expression {params.Ansible == "CreateApp" } }
             steps {
                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'frontend'
             }

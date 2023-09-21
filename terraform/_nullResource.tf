@@ -5,10 +5,12 @@ resource "null_resource" "extract_database" {
   }
 }
 
-resource "null_resource" "import-mysql-schema" {
+resource "null_resource" "import_shipping_db" {
+  // Import databse into RDS 
   depends_on = [ 
     aws_rds_cluster_instance.reader,
-    aws_rds_cluster_instance.reader
+    aws_rds_cluster_instance.reader,
+    null_resource.extract_database
     ]
   provisioner "local-exec" {
     command = <<EOF

@@ -68,7 +68,7 @@ resource "aws_rds_cluster_instance" "writer" {
   engine                                = "aurora-mysql"
   monitoring_interval                   = 5
   monitoring_role_arn                   = aws_iam_role.rds_monitoring_role.arn
-  publicly_accessible                   = false
+  publicly_accessible                   = true # true/false
   performance_insights_enabled          = true
   performance_insights_retention_period = 7
   tags = (merge(local.common_tags, tomap({
@@ -91,7 +91,7 @@ resource "aws_rds_cluster_instance" "reader" {
   engine                                = "aurora-mysql"
   monitoring_interval                   = 5
   monitoring_role_arn                   = aws_iam_role.rds_monitoring_role.arn
-  publicly_accessible                   = false
+  publicly_accessible                   = true # true/false
   performance_insights_enabled          = true
   performance_insights_retention_period = 7
   tags = (merge(local.common_tags, tomap({

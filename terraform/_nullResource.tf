@@ -28,7 +28,7 @@ resource "null_resource" "import_shipping_db" {
     ]
   provisioner "local-exec" {
     command = <<EOF
-    mysql -h ${aws_rds_cluster.roboshop.endpoint} -u${jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_USER"]} -p${jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_PASS"]} < shipping.sql
+    mysql -h ${aws_rds_cluster.roboshop.endpoint} -u${jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_USER"]} -p${jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_PASS"]} "${var.rds_cluster["database_name"]}" < shipping.sql
     EOF
   }
 }

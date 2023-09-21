@@ -8,15 +8,15 @@ resource "null_resource" "extract_database" {
   }
 }
 
-# resource "null_resource" "extract_database" {
-#   // wait for the RDS to be ready
-#   # triggers = {
-#   #   always_run = "${timestamp()}"
-#   # }
-#   provisioner "local-exec" {
-#     command = "sleep 600"
-#   }
-# }
+resource "null_resource" "extract_database" {
+  // wait for the RDS to be ready
+  # triggers = {
+  #   always_run = "${timestamp()}"
+  # }
+  provisioner "local-exec" {
+    command = "sleep 600"
+  }
+}
 
 resource "null_resource" "import_shipping_db" {
   // Import databse into RDS 

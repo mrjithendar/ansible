@@ -49,11 +49,11 @@ pipeline {
             // Install MySQL MongoDB RabbitMQ Redis
             when { expression {params.Ansible == "Create_Infra"} }
             parallel {
-                stage ('Installing MySQL') {
-                    steps {
-                        ansiblePlaybook become: true, credentialsId: 'roboShop', installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mysql'
-                    }
-                }
+                // stage ('Installing MySQL') {
+                //     steps {
+                //         ansiblePlaybook become: true, credentialsId: 'roboShop', installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mysql'
+                //     }
+                // }
                 stage ('Istalling MongoDB') {
                     steps {
                         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mongodb'
@@ -64,11 +64,11 @@ pipeline {
                         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
                         }
                     }
-                stage ('Installing Redis') {
-                    steps {
-                        ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'redis'
-                    }
-                }
+                // stage ('Installing Redis') {
+                //     steps {
+                //         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'redis'
+                //     }
+                // }
             }
         }
 

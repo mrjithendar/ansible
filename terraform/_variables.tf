@@ -35,6 +35,7 @@ variable "rds_cluster" {
     db_max_capacity            = "16"
     db_min_capacity            = "0.5"
     db_backup_retention_period = "7"
+    database_name              = "roboshopdb"
   }
 }
 

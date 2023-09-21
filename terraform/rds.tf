@@ -31,7 +31,7 @@ resource "aws_rds_cluster" "roboshop" {
   cluster_identifier                  = "mysql-cluster-${var.environment}-roboshop"
   engine                              = "aurora-mysql"
   engine_version                      = "8.0.mysql_aurora.3.04.0" #old "5.7.mysql_aurora.2.03.2"
-  database_name                       = "roboshopdb"
+  database_name                       = var.rds_cluster["database_name"]
   master_username                     = jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_USER"]
   master_password                     = jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_PASS"]
   backup_retention_period             = var.rds_cluster["db_backup_retention_period"]

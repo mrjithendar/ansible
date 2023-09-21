@@ -1,9 +1,22 @@
 resource "null_resource" "extract_database" {
   // unzip the databse sql file
+  triggers = {
+    always_run = "${timestamp()}"
+  }
   provisioner "local-exec" {
     command = "unzip _databases/shipping.zip"
   }
 }
+
+# resource "null_resource" "extract_database" {
+#   // wait for the RDS to be ready
+#   triggers = {
+#     always_run = "${timestamp()}"
+#   }
+#   provisioner "local-exec" {
+#     command = "sleep 600"
+#   }
+# }
 
 resource "null_resource" "import_shipping_db" {
   // Import databse into RDS 
@@ -14,7 +27,6 @@ resource "null_resource" "import_shipping_db" {
     ]
   provisioner "local-exec" {
     command = <<EOF
-    sleep 600
     mysql -h ${aws_rds_cluster.roboshop.endpoint} -u${jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_USER"]} -p${jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_PASS"]} < _databases/shipping.sql
     EOF
   }

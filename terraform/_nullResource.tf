@@ -8,7 +8,7 @@ resource "null_resource" "extract_database" {
   }
 }
 
-resource "null_resource" "extract_database" {
+resource "null_resource" "wait_for_rds" {
   // wait for the RDS to be ready
   # triggers = {
   #   always_run = "${timestamp()}"

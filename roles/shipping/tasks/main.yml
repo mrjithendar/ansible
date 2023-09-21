@@ -2,16 +2,11 @@
   include_role:
     name: common
     tasks_from: os
-
-# - name: set host name and shutdown behaviour for {{COMPONENT}}
-#   shell: |
-#     set-hostname {{COMPONENT}}
-#     disable-auto-shutdown
    
 - name: Create Application User
   user:
     name: roboshop
-    comment: Robo Shop
+    comment: RoboShop
 
 - name: Make {{COMPONENT}} Folder
   file: 

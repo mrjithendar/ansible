@@ -16,5 +16,5 @@ resource "cloudflare_record" "roboshop" {
   name    = "roboshop"
   value   = aws_instance.instance[7].public_ip
   type    = "A"
-  proxied = true
+  proxied = false #true/false
 }

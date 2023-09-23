@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Ansible', choices: ['CreateApp', 'DeleteApp', 'Invoke_playbook'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['CreateInfra', 'CreateApp', 'DeleteInfra', 'Invoke_playbook'], description: 'Pick any action')
                }
 
     environment {
@@ -14,7 +14,7 @@ pipeline {
     stages {
 
         stage('Create Infra with Terraform') {
-            when { expression {params.Ansible == "CreateApp" } }
+            when { expression {params.Ansible == "CreateInfra" } }
             // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
@@ -28,7 +28,7 @@ pipeline {
         }
 
         stage('Delete Infra with Terraform') {
-            when { expression {params.Ansible == "DeleteApp" } }
+            when { expression {params.Ansible == "DeleteInfra" } }
             // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {

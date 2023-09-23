@@ -12,33 +12,33 @@
       - npm 
     state: latest
     
-- name: Add App user
-  user:
-    name: roboshop
-    comment: RoboShop user
+# - name: Add App user
+#   user:
+#     name: centos
+#     comment: centos user
 
 - name: Make App Directory
-  shell: mkdir -p /home/roboshop/catalogue
+  shell: mkdir -p /home/centos/catalogue
 
 - name: Download Component files
   copy: 
     src: files/
-    dest: /home/roboshop/catalogue
+    dest: /home/centos/catalogue
 
 - name: Download NodeJS dependencies
   shell: npm install
   args:
-    chdir: /home/roboshop/{{COMPONENT}}
-  #become_user: roboshop
+    chdir: /home/centos/{{COMPONENT}}
+  #become_user: centos
 
 # - name: Installing NodeJS dependencies
 #   shell: |
-#     cd /home/roboshop/{{COMPONENT}}
+#     cd /home/centos/{{COMPONENT}}
 #     npm install
 
 # - name: Installing NodeJS dependencies
 #   npm:
-#     path: /home/roboshop/{{COMPONENT}}
+#     path: /home/centos/{{COMPONENT}}
 #     state: latest
 
 - name: Add {{COMPONENT}} service file

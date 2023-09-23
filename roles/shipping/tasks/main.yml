@@ -3,20 +3,20 @@
     name: common
     tasks_from: os
    
-- name: Create Application User
-  user:
-    name: roboshop
-    comment: RoboShop
+# - name: Create Application User
+#   user:
+#     name: centos
+#     comment: centos
 
 - name: Make {{COMPONENT}} Folder
   file: 
-    path: /home/roboshop/{{COMPONENT}}
+    path: /home/centos/{{COMPONENT}}
     state: directory
 
 - name: Download and Extract Artifacts
   copy:
    src: files/
-   dest: /home/roboshop/shipping
+   dest: /home/centos/shipping
 
 - name: Installing Maven 
   yum:
@@ -26,12 +26,12 @@
 - name: Maven Clean Package
   shell: mvn clean package 
   args:
-    chdir: /home/roboshop/{{COMPONENT}}
+    chdir: /home/centos/{{COMPONENT}}
 
 - name: Adding Shipping.jar file
   copy:
-    src: /home/roboshop/{{COMPONENT}}/target/shipping-1.0.jar
-    dest: /home/roboshop/{{COMPONENT}}/shipping.jar
+    src: /home/centos/{{COMPONENT}}/target/shipping-1.0.jar
+    dest: /home/centos/{{COMPONENT}}/shipping.jar
     remote_src: yes
 
 - name: Add {{COMPONENT}} service file

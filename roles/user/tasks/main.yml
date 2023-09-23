@@ -8,15 +8,15 @@
 #     set-hostname {{COMPONENT}}
 #     disable-auto-shutdown
     
-- name: User App user
-  user:
-    name: roboshop
-    comment: RoboShop user
+# - name: User App user
+#   user:
+#     name: centos
+#     comment: centos user
 
 - name: Download and Extract Artifacts
   copy:
     src: files/
-    dest: /home/roboshop/{{COMPONENT}}
+    dest: /home/centos/{{COMPONENT}}
 
 - name: Installing NodeJs Package Manager
   yum:
@@ -26,11 +26,11 @@
 - name: Download NodeJS dependencies
   shell: npm install
   args:
-    chdir: /home/roboshop/{{COMPONENT}}
+    chdir: /home/centos/{{COMPONENT}}
 
 # - name: Installing NodeJS dependencies
 #   npm:
-#     path: /home/roboshop/{{COMPONENT}}
+#     path: /home/centos/{{COMPONENT}}
 #     state: latest
 
 - name: Add {{COMPONENT}} service file

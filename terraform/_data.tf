@@ -33,3 +33,8 @@ data "aws_availability_zones" "azs" {
   # excluded us-east-1e availability zone
   exclude_names = ["us-east-1e"]
 }
+
+
+data "cloudflare_zone" "jithendar" {
+  name = "jithendar.com"
+}

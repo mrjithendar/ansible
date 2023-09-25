@@ -1,6 +1,6 @@
 #!/bin/sh
 > inv
-for component in frontend catalogue cart user shipping payment mysql mongodb redis rabbitmq; do
+for component in frontend catalogue cart user shipping payment mongodb rabbitmq; do
         IP=$(aws ec2 describe-instances --filters Name=tag:Name,Values=${component} Name=instance-state-name,Values=running | jq '.Reservations[].Instances[].PublicIpAddress' |xargs)
         if [ -n "${IP}" ]; then
                 # echo $IP component=${component} >> inv

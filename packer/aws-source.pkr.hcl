@@ -1,17 +1,17 @@
-data "amazon-ami" "amazonLinux2" {
-  filters = {
-    name = "amazonlinux2"
-  }
-  most_recent = true
-  owners      = ["amazon"]
-  region      = var.aws_region
-}
+# data "amazon-ami" "amazonLinux2" {
+#   filters = {
+#     name = "Amazon Linux 2023 AMI"
+#   }
+#   most_recent = true
+#   owners      = ["amazon"]
+#   region      = var.aws_region
+# }
 
 source "amazon-ebs" "amazonLinux2" {
   ami_name       = "roboshop-{{timestamp}}"
   instance_type  = "t3.large"
   region         = var.aws_region
-  source_ami     = data.amazon-ami.amazonLinux2.id
+  source_ami     = "ami-03a6eaae9938c858c" #data.amazon-ami.amazonLinux2.id
 //   user_data_file = "./scripts/WinrmSetup.ps1"
   ssh_port = 22
   ssh_username = "ec2-user"

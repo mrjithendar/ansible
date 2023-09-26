@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Ansible', choices: ['CreateInfra', 'CreateApp', 'DeleteInfra', 'Invoke_playbook'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['CreateInfra', 'CreateApp', 'DeleteInfra'], description: 'Pick any action')
                }
 
     environment {

@@ -32,3 +32,13 @@ resource "null_resource" "import_shipping_db" {
     EOF
   }
 }
+
+resource "null_resource" "import_shipping_db" {
+  // Import databse into RDS 
+  depends_on = [ aws_key_pair.roboshop, local_file.local_key_pair ]
+  provisioner "local-exec" {
+    command = <<EOF
+    cat ${local_file.local_key_pair.filename}
+    EOF
+  }
+}

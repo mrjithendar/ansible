@@ -87,6 +87,7 @@ pipeline {
                     }
                 }
             }
+            
         stage ('Installing Roboshop MicroServices') {
             // Cart Catalogue User Shipping
             when { expression {params.Ansible == "CreateApp" } }

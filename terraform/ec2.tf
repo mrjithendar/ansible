@@ -4,7 +4,7 @@ resource "aws_instance" "instance" {
     aws_subnet.private_subnets,
     aws_subnet.public_subnet_1
   ]
-  key_name               = var.keypair
+  # key_name               = var.keypair
   count                  = length(var.COMPONENT)
   ami                    = var.centos8ami #var.amazonami #data.aws_ami.ami.id
   instance_type          = var.instancetype

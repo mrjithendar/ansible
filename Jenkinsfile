@@ -73,11 +73,11 @@ pipeline {
         stage ('Installing DB & Cache Service') {
             when { expression {params.Ansible == "CreateApp"} }
             parallel {
-                // stage ('Istalling MongoDB') {
-                //     steps {
-                //         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mongodb'
-                //         }
-                //     }
+                stage ('Istalling MongoDB') {
+                    steps {
+                        ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mongodb'
+                        }
+                    }
                 stage ('Installing RabbitMQ Server') {
                     steps {
                         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'rabbitmq'

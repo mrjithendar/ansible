@@ -78,11 +78,11 @@ pipeline {
                         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mongodb'
                         }
                     }
-                // stage ('Installing RabbitMQ Server') {
-                //     steps {
-                //         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
-                //         }
-                //     }
+                stage ('Installing RabbitMQ Server') {
+                    steps {
+                        ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
+                        }
+                    }
                 }
             }
 
@@ -110,11 +110,11 @@ pipeline {
                     ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'shipping'
                 }
             }
-            // stage ('Installing Payment Service') {
-            //     steps {
-            //         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'payment'
-            //         }
-            //     }
+            stage ('Installing Payment Service') {
+                steps {
+                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'payment'
+                    }
+                }
             }
         }
 

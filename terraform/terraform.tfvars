@@ -1,5 +1,5 @@
 COMPONENT = [
-  "mongo",
+  "mongod ",
   "rabbitmq",
   "cart",
   "catalogue",

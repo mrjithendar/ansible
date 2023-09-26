@@ -1,4 +1,5 @@
 build {
+    
   sources = ["source.amazon-ebs.amazonLinux2"]
 
   provisioner "file" {
@@ -12,9 +13,12 @@ build {
     ]
   }
 
-#   provisioner "shell" {
-#     script = "/tmp/patch.sh"
-#   }
+  provisioner "shell" {
+    # script = "/tmp/patch.sh"
+    inline = [
+        "sh /tmp/patch.sh"
+        ]
+  }
 
   post-processor "manifest" {
     output     = "manifest.json"

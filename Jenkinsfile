@@ -110,11 +110,11 @@ pipeline {
                     ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'shipping'
                 }
             }
-            stage ('Installing Payment Service') {
-                steps {
-                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'payment'
-                    }
-                }
+            // stage ('Installing Payment Service') {
+            //     steps {
+            //         ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'payment'
+            //         }
+            //     }
             }
         }
 

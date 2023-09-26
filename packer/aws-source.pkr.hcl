@@ -33,7 +33,7 @@ source "amazon-ebs" "amazonLinux2" {
   }
 
   tags = {
-    Name    = "{{ .Ami_Name }}"
+    Name    = "roboshop"
     Base_AMI_Name = "{{ .SourceAMIName }}"
   }
 }

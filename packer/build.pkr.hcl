@@ -12,9 +12,9 @@ build {
     ]
   }
 
-  provisioner "shell" {
-    script = "/tmp/patch.sh"
-  }
+#   provisioner "shell" {
+#     script = "/tmp/patch.sh"
+#   }
 
   post-processor "manifest" {
     output     = "manifest.json"

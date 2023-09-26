@@ -13,7 +13,7 @@ build {
   }
 
   provisioner "shell" {
-    script = "/tmp/script.sh"
+    script = "/tmp/patch.sh"
   }
 
   post-processor "manifest" {

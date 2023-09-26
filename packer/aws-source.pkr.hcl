@@ -1,6 +1,6 @@
 data "amazon-ami" "amazonLinux2" {
   filters = {
-    name = "Amazon Linux 2023 AMI"
+    name = "amazonlinux2"
   }
   most_recent = true
   owners      = ["amazon"]

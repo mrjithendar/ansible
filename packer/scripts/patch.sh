@@ -8,6 +8,12 @@ sudo cat /etc/ssh/sshd_config | grep "PasswordAuthentication"
 sudo sed -i 's\#PermitRootLogin prohibit-password\PermitRootLogin yes\g' /etc/ssh/sshd_config
 sudo cat /etc/ssh/sshd_config | grep "PermitRootLogin"
 
+sudo sed -i 's\disable_root: true\disable_root: false\g' /etc/cloud/cloud.cfg
+sudo cat /etc/cloud/cloud.cfg | grep disable_root
+
+sudo sed -i 's\ssh_pwauth:   false\ssh_pwauth:   true\g' /etc/cloud/cloud.cfg
+sudo cat /etc/cloud/cloud.cfg | grep ssh_pwauth
+
 sudo systemctl restart sshd
 
 echo "setting root password"

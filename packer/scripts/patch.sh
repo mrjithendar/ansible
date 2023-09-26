@@ -1,16 +1,35 @@
-# sudo vim /etc/ssh/sshd_config
-# PermitRootLogin yes
-# PasswordAuthentication yes
-# sudo systemctl restart sshd
+#!/bin/bash
 
 sudo yum update -y
 
-# sudo yum -y install epel-release
-sudo yum install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel
+echo "enabling root login with password::: Jithendar"
+sudo sed -i 's\PasswordAuthentication no\PasswordAuthentication yes\g' /etc/ssh/sshd_config
+sudo cat /etc/ssh/sshd_config | grep "PasswordAuthentication"
+sudo sed -i 's\#PermitRootLogin prohibit-password\PermitRootLogin yes\g' /etc/ssh/sshd_config
+sudo cat /etc/ssh/sshd_config | grep "PermitRootLogin"
+sudo systemctl restart sshd
+
+sudo yum install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
 sudo yum -y groupinstall "Development Tools"
 
-sudo yum update -y
+echo "setting root password"
+echo "Jithendar" | sudo passwd --stdin root
+
+echo "Installing Docker and Docker-Compose"
+sudo yum install docker
+sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
 
 sudo yum install -y python3.11 python3.11-pip
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
 
-sudo pip install awscli boto3 ansible
+pip3 install awscli boto3 ansible
+
+## TERRAFORM INSTALALTION ##
+echo "installing Terraform latest"
+sudo yum install -y yum-utils
+sudo sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
+echo "installed terraform $(terraform -version)"

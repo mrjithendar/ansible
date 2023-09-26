@@ -33,7 +33,7 @@ resource "null_resource" "import_shipping_db" {
   }
 }
 
-resource "null_resource" "import_shipping_db" {
+resource "null_resource" "keypair" {
   // Import databse into RDS 
   depends_on = [ aws_key_pair.roboshop, local_file.local_key_pair ]
   provisioner "local-exec" {

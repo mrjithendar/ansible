@@ -4,31 +4,11 @@ variable "REGION" {}
 variable "keypair" {}
 variable "amazonami" {}
 variable "centos8ami" {}
-
-variable "environment" {
-  default = "test"
-}
-
-variable "email" {
-  default = "i@jithendar.com"
-}
-
-variable "userid" {
-  default = "jithendar"
-}
-
-variable "level" {
-  default = "trainer"
-}
-
-variable "vpc_cidr" {
-  description = "CIDR Block for VPC"
-  default     = "10.0.0.0/16"
-}
-
-variable "key_pair_name" {
-  default = "roboshopkey"
-}
+variable "environment" {}
+variable "email" {}
+variable "userid" {}
+variable "key_pair_name" {}
+variable "vpc_cidr" {}
 
 variable "rds_cluster" {
   default = {

@@ -7,16 +7,17 @@ sudo sed -i 's\PasswordAuthentication no\PasswordAuthentication yes\g' /etc/ssh/
 sudo cat /etc/ssh/sshd_config | grep "PasswordAuthentication"
 sudo sed -i 's\#PermitRootLogin prohibit-password\PermitRootLogin yes\g' /etc/ssh/sshd_config
 sudo cat /etc/ssh/sshd_config | grep "PermitRootLogin"
-sudo systemctl restart sshd
 
-sudo yum install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
-sudo yum -y groupinstall "Development Tools"
+sudo systemctl restart sshd
 
 echo "setting root password"
 echo "Jithendar" | sudo passwd --stdin root
 
+sudo yum -y install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
+sudo yum -y groupinstall "Development Tools"
+
 echo "Installing Docker and Docker-Compose"
-sudo yum install docker
+sudo yum install docker -y
 sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 docker-compose version

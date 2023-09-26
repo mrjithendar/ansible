@@ -34,7 +34,6 @@ pipeline {
                             sh "packer --version"
                             sh '''
                             cd packer
-                            pwd
                             packer validate .
                             packer build .
                             '''

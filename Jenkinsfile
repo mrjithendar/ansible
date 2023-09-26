@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'Ansible', choices: ['CreateInfra', 'CreateApp', 'DeleteInfra'], description: 'Pick any action')
+        choice(name: 'Ansible', choices: ['CreateAMI', 'CreateInfra', 'CreateApp', 'DeleteInfra'], description: 'Pick any action')
                }
 
     environment {
@@ -13,33 +13,33 @@ pipeline {
 
     stages {
 
+        stage('Create AMI with Packer') {
+            when { expression {params.Ansible == "CreateAMI" } }
+            steps {
+                withAWS(credentials: 'AWSCred', region: "${region}") {
+                    sh "packer --version"
+                    sh '''
+                    cd packer
+                    packer validate .
+                    packer build .
+                    '''
+                }
+            }
+        }
+
         stage('Create Infrastructure') {
             when { expression {params.Ansible == "CreateInfra" } }
             // tools {terraform 'terraform'}
-            parallel {
-                stage('Create Infra with Terraform') {
-                    steps {
-                        withAWS(credentials: 'AWSCred', region: "${region}") {
-                            sh "terraform --version"
-                            sh "terraform -chdir=${tfDir} init -reconfigure"
-                            sh "terraform -chdir=${tfDir} validate"
-                            sh "terraform -chdir=${tfDir} plan -out=planfile"
-                            sh "terraform -chdir=${tfDir} apply planfile"
-                        }
+            stage('Create Infra with Terraform') {
+                steps {
+                    withAWS(credentials: 'AWSCred', region: "${region}") {
+                        sh "terraform --version"
+                        sh "terraform -chdir=${tfDir} init -reconfigure"
+                        sh "terraform -chdir=${tfDir} validate"
+                        sh "terraform -chdir=${tfDir} plan -out=planfile"
+                        sh "terraform -chdir=${tfDir} apply planfile"
                     }
                 }
-                stage('Create AMI with Packer') {
-                    steps {
-                        withAWS(credentials: 'AWSCred', region: "${region}") {
-                            sh "packer --version"
-                            sh '''
-                            cd packer
-                            packer validate .
-                            packer build .
-                            '''
-                        }
-                    }
-                }    
             }
         }
 

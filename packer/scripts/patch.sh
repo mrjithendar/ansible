@@ -14,10 +14,10 @@ sudo cat /etc/cloud/cloud.cfg | grep disable_root
 sudo sed -i 's\ssh_pwauth:   false\ssh_pwauth:   true\g' /etc/cloud/cloud.cfg
 sudo cat /etc/cloud/cloud.cfg | grep ssh_pwauth
 
-sudo systemctl restart sshd
-
 echo "setting root password"
 echo "Jithendar" | sudo passwd --stdin root
+
+sudo systemctl restart sshd
 
 sudo yum -y install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
 sudo yum -y groupinstall "Development Tools"
@@ -31,8 +31,6 @@ docker-compose version
 sudo yum install -y python3.11 python3.11-pip
 curl -O https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py --user
-
-pip3 install awscli boto3 ansible
 
 ## TERRAFORM INSTALALTION ##
 echo "installing Terraform latest"

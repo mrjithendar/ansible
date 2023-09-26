@@ -9,6 +9,7 @@ variable "email" {}
 variable "userid" {}
 variable "key_pair_name" {}
 variable "vpc_cidr" {}
+variable "level" {}
 
 variable "rds_cluster" {
   default = {

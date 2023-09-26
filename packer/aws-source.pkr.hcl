@@ -16,12 +16,12 @@ source "amazon-ebs" "amazonLinux2" {
   ssh_port = 22
   ssh_username = "ec2-user"
 
-  launch_block_device_mappings {
-    device_name           = "/dev/sda1"
-    volume_size           = 40
-    volume_type           = "gp2"
-    delete_on_termination = true
-  }
+#   launch_block_device_mappings {
+#     device_name           = "/dev/sda1"
+#     volume_size           = 40
+#     volume_type           = "gp2"
+#     delete_on_termination = true
+#   }
 
   temporary_iam_instance_profile_policy_document {
     Version = "2012-10-17"

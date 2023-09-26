@@ -1,10 +1,10 @@
 [Unit]
 Description = Cart Service
 [Service]
-User=centos
+User=roboshop
 Environment=REDIS_HOST=redis.{{DOMAIN}}
 Environment=CATALOGUE_HOST=catalogue.{{DOMAIN}}
-ExecStart=/bin/node --no-deprecation /home/centos/cart/server.js
+ExecStart=/bin/node --no-deprecation /home/roboshop/cart/server.js
 SyslogIdentifier=cart
 
 [Install]

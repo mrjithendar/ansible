@@ -10,13 +10,13 @@
     
 # - name: User App user
 #   user:
-#     name: centos
-#     comment: centos user
+#     name: roboshop
+#     comment: roboshop user
 
 - name: Download and Extract Artifacts
   copy:
     src: files/
-    dest: /home/centos/{{COMPONENT}}
+    dest: /home/roboshop/{{COMPONENT}}
 
 - name: Installing NodeJs Package Manager
   yum:
@@ -26,11 +26,11 @@
 - name: Download NodeJS dependencies
   shell: npm install
   args:
-    chdir: /home/centos/{{COMPONENT}}
+    chdir: /home/roboshop/{{COMPONENT}}
 
 # - name: Installing NodeJS dependencies
 #   npm:
-#     path: /home/centos/{{COMPONENT}}
+#     path: /home/roboshop/{{COMPONENT}}
 #     state: latest
 
 - name: Add {{COMPONENT}} service file

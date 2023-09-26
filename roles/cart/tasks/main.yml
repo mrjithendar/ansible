@@ -19,33 +19,33 @@
 
 # - name: Create Application User
 #   user:
-#     name: centos
+#     name: roboshop
 #     comment: Robo Shop
 
 - name: Make {{COMPONENT}} Folder
   file:
-    path: /home/centos/{{COMPONENT}}
+    path: /home/roboshop/{{COMPONENT}}
     state: directory
 
 - name: Download and Extract Artifacts
   copy:
    src: files/
-   dest: /home/centos/{{COMPONENT}}
+   dest: /home/roboshop/{{COMPONENT}}
 
 - name: Installing NodeJS dependencies
   npm:
-    path: /home/centos/{{COMPONENT}}
+    path: /home/roboshop/{{COMPONENT}}
     state: latest
 
 # - name: Download NodeJS dependencies
 #   shell: npm install
 #   args:
-#     chdir: /home/centos/{{COMPONENT}}
-#   become_user: centos
+#     chdir: /home/roboshop/{{COMPONENT}}
+#   become_user: roboshop
 
 # - name: Installing NodeJS dependencies
 #   shell: |
-#     cd /home/centos/{{COMPONENT}}
+#     cd /home/roboshop/{{COMPONENT}}
 #     npm install
 
 #Update packages based on package.json to their latest version.

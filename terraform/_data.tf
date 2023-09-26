@@ -2,10 +2,10 @@
 
 data "aws_ami" "ami" {
   most_recent = true
-  owners      = ["973714476881"]
+  owners      = ["826334059644"] #["973714476881"]
   filter {
     name   = "name"
-    values = ["Centos-7-DevOps-Practice"]
+    values = ["robosgop-*"]
   }
 }
 

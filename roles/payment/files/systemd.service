@@ -3,7 +3,7 @@ Description=Payment Service
 
 [Service]
 User=root
-WorkingDirectory=/home/centos/payment
+WorkingDirectory=/home/roboshop/payment
 
 Environment=CART_HOST=CARTHOST
 Environment=USER_HOST=USERHOST

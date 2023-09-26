@@ -33,6 +33,7 @@ pipeline {
                         withAWS(credentials: 'AWSCred', region: "${region}") {
                             sh "packer --version"
                             sh "cd packer"
+                            sh "pwd"
                             sh "packer validate ."
                             sh "packer build ."
                         }

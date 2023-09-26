@@ -3,7 +3,7 @@ build {
   sources = ["source.amazon-ebs.amazonLinux2"]
 
   provisioner "file" {
-    source      = "./scripts/patch.sh"
+    source      = "scripts/patch.sh"
     destination = "/tmp/patch.sh"
   }
   

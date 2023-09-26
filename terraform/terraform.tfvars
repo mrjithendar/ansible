@@ -1,6 +1,4 @@
 COMPONENT = [
-  # "mysql", alwasy removed
-  # "redis", alwasy removed
   "mongo",
   "rabbitmq",
   "cart",

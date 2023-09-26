@@ -1,19 +1,9 @@
 build {
-  sources = [
-    "source.amazon-ebs.windows-2019"
-  ]
-
-  provisioner "shell" {
-    only   = ["amazon-ebs.windows-2019"]
-    inline = [
-      "C:/ProgramData/Amazon/EC2-Windows/Launch/Scripts/InitializeDisks.ps1",
-      "C:/ProgramData/Amazon/EC2-Windows/Launch/Scripts/InitializeInstance.ps1 -SchedulePerBoot"      
-    ]
-  } 
+  sources = ["source.amazon-ebs.amazonLinux2"]
 
   provisioner "file" {
-    source      = "./scripts/ResizePartition.ps1"
-    destination = "D:/OutSystems/packer/ResizePartition.ps1"
+    source      = "./scripts/patch.sh"
+    destination = "/tmp/patch.sh"
   }
   
   provisioner "shell" {
@@ -22,7 +12,13 @@ build {
     ]
   }
 
+  provisioner "shell" {
+    script = "/tmp/script.sh"
+  }
+
   post-processor "manifest" {
+    output     = "manifest.json"
+    strip_path = true
   }
 
 }

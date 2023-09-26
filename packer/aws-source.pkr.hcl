@@ -12,7 +12,7 @@ source "amazon-ebs" "amazonLinux2" {
   instance_type  = "t3.large"
   region         = var.aws_region
   source_ami     = "ami-03a6eaae9938c858c" #data.amazon-ami.amazonLinux2.id
-//   user_data_file = "./scripts/WinrmSetup.ps1"
+//   user_data_file = "./scripts/script.sh"
   ssh_port = 22
   ssh_username = "ec2-user"
 

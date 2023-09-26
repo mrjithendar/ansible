@@ -16,13 +16,23 @@ pipeline {
         stage('Create Infra with Terraform') {
             when { expression {params.Ansible == "CreateInfra" } }
             // tools {terraform 'terraform'}
-            steps {
-                withAWS(credentials: 'AWSCred', region: "${region}") {
-                    sh "terraform --version"
-                    sh "terraform -chdir=${tfDir} init -reconfigure"
-                    sh "terraform -chdir=${tfDir} validate"
-                    sh "terraform -chdir=${tfDir} plan -out=planfile"
-                    sh "terraform -chdir=${tfDir} apply planfile"
+            parallel {
+                steps {
+                    withAWS(credentials: 'AWSCred', region: "${region}") {
+                        sh "terraform --version"
+                        sh "terraform -chdir=${tfDir} init -reconfigure"
+                        sh "terraform -chdir=${tfDir} validate"
+                        sh "terraform -chdir=${tfDir} plan -out=planfile"
+                        sh "terraform -chdir=${tfDir} apply planfile"
+                    }
+                }
+                steps {
+                    withAWS(credentials: 'AWSCred', region: "${region}") {
+                        sh "packer --version"
+                        sh "cd packer"
+                        sh "packer validate ."
+                        sh "packer build ."
+                    }
                 }
             }
         }

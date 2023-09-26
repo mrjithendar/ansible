@@ -1,7 +1,7 @@
-sudo vim /etc/ssh/sshd_config
-PermitRootLogin yes
-PasswordAuthentication yes
-sudo systemctl restart sshd
+# sudo vim /etc/ssh/sshd_config
+# PermitRootLogin yes
+# PasswordAuthentication yes
+# sudo systemctl restart sshd
 
 yum update -y
 

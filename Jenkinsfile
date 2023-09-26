@@ -32,7 +32,7 @@ pipeline {
                     steps {
                         withAWS(credentials: 'AWSCred', region: "${region}") {
                             sh "packer --version"
-                            sh ''''
+                            sh '''
                             cd packer
                             pwd
                             packer validate .

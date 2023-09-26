@@ -65,7 +65,7 @@ pipeline {
                     '''
                     sh "chmod +x newmkinv.sh"
                     sh 'bash newmkinv.sh'
-                    sh "chmod 600 roboshop.pem"
+                    // sh "chmod 600 roboshop.pem"
                 }
             }
         }

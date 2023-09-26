@@ -30,15 +30,13 @@ pipeline {
         stage('Create Infrastructure') {
             when { expression {params.Ansible == "CreateInfra" } }
             // tools {terraform 'terraform'}
-            stage('Create Infra with Terraform') {
-                steps {
-                    withAWS(credentials: 'AWSCred', region: "${region}") {
-                        sh "terraform --version"
-                        sh "terraform -chdir=${tfDir} init -reconfigure"
-                        sh "terraform -chdir=${tfDir} validate"
-                        sh "terraform -chdir=${tfDir} plan -out=planfile"
-                        sh "terraform -chdir=${tfDir} apply planfile"
-                    }
+            steps {
+                withAWS(credentials: 'AWSCred', region: "${region}") {
+                    sh "terraform --version"
+                    sh "terraform -chdir=${tfDir} init -reconfigure"
+                    sh "terraform -chdir=${tfDir} validate"
+                    sh "terraform -chdir=${tfDir} plan -out=planfile"
+                    sh "terraform -chdir=${tfDir} apply planfile"
                 }
             }
         }
@@ -87,7 +85,7 @@ pipeline {
                     }
                 }
             }
-            
+
         stage ('Installing Roboshop MicroServices') {
             // Cart Catalogue User Shipping
             when { expression {params.Ansible == "CreateApp" } }

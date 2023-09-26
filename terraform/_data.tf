@@ -5,7 +5,7 @@ data "aws_ami" "ami" {
   owners      = ["826334059644"] #["973714476881"]
   filter {
     name   = "name"
-    values = ["robosgop-*"]
+    values = ["roboshop-*"]
   }
 }
 

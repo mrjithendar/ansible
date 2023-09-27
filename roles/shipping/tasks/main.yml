@@ -3,10 +3,10 @@
     name: common
     tasks_from: os
    
-# - name: Create Application User
-#   user:
-#     name: roboshop
-#     comment: roboshop
+- name: Create Application User
+  user:
+    name: roboshop
+    comment: roboshop
 
 - name: Make {{COMPONENT}} Folder
   file: 

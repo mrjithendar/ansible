@@ -18,14 +18,17 @@ echo "setting root password"
 echo "Jithendar" | sudo passwd --stdin root
 
 sudo systemctl restart sshd
+echo "sshd restarted, root user can login with password"
 
 sudo yum -y install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
 sudo yum -y groupinstall "Development Tools"
 
 # sudo amazon-linux-extras install epel -y
 
-curl -O https://bootstrap.pypa.io/get-pip.py
-python3 get-pip.py --user
+echo "installing Python and pip3"
+sudo yum install python3.11 python3-pip
+# curl -O https://bootstrap.pypa.io/get-pip.py
+# python3 get-pip.py --user
 
 sudo yum update -y
 sudo yum upgrade -y

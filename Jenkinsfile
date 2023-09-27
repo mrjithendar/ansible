@@ -15,9 +15,11 @@ pipeline {
 
         stage('Create Infrastructure') {
             when {
-                anyof {
-                    expression{params.Ansible == "CreateInfra"}
-                    expression{params.Ansible == "CreateApp"}
+                anyOf {
+                    // expression {
+                    params.Ansible == "CreateInfra"
+                    params.Ansible == "CreateApp"
+                    // }
                 }
             }
             // tools {terraform 'terraform'}
@@ -44,96 +46,96 @@ pipeline {
             }
         }
 
-        stage('Make Ansible Inventery') {
-            when {
-                anyof {
-                    expression{params.Ansible == "CreateInfra"}
-                    expression{params.Ansible == "CreateApp"}
-                }
-            }
-            steps {
-                withAWS(credentials: 'AWSCred', region: "${region}") {
-                    sh "sleep 10" // let the ec2 instances fully ready
-                    sh "chmod +x mkinv.sh"
-                    sh '''
-                    awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh
-                    '''
-                    sh "chmod +x newmkinv.sh"
-                    sh 'bash newmkinv.sh'
-                    // sh "chmod 600 roboshop.pem"
-                }
-            }
-        }
+    //     stage('Make Ansible Inventery') {
+    //         when {
+    //             anyof {
+    //                 expression{params.Ansible == "CreateInfra"}
+    //                 expression{params.Ansible == "CreateApp"}
+    //             }
+    //         }
+    //         steps {
+    //             withAWS(credentials: 'AWSCred', region: "${region}") {
+    //                 sh "sleep 10" // let the ec2 instances fully ready
+    //                 sh "chmod +x mkinv.sh"
+    //                 sh '''
+    //                 awk '{ sub("\r$", ""); print }' mkinv.sh > newmkinv.sh
+    //                 '''
+    //                 sh "chmod +x newmkinv.sh"
+    //                 sh 'bash newmkinv.sh'
+    //                 // sh "chmod 600 roboshop.pem"
+    //             }
+    //         }
+    //     }
 
-        stage ('Installing DB & Cache Service') {
-            when {
-                anyof {
-                    expression{params.Ansible == "CreateInfra"}
-                    expression{params.Ansible == "CreateApp"}
-                }
-            }
-            parallel {
-                stage ('Istalling MongoDB') {
-                    steps {
-                        ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mongodb'
-                        }
-                    }
-                stage ('Installing RabbitMQ Server') {
-                    steps {
-                        ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
-                        }
-                    }
-                }
-            }
+    //     stage ('Installing DB & Cache Service') {
+    //         when {
+    //             anyof {
+    //                 expression{params.Ansible == "CreateInfra"}
+    //                 expression{params.Ansible == "CreateApp"}
+    //             }
+    //         }
+    //         parallel {
+    //             stage ('Istalling MongoDB') {
+    //                 steps {
+    //                     ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'mongodb'
+    //                     }
+    //                 }
+    //             stage ('Installing RabbitMQ Server') {
+    //                 steps {
+    //                     ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'rabbitmq'
+    //                     }
+    //                 }
+    //             }
+    //         }
 
-        stage ('Installing Roboshop MicroServices') {
-            // Cart Catalogue User Shipping
-            when {
-                anyof {
-                    expression{params.Ansible == "CreateInfra"}
-                    expression{params.Ansible == "CreateApp"}
-                }
-            }
-            parallel {
-            stage ('Installing Cart Service') {
-                steps {
-                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'cart'
-                }
-            }
-            stage ('Installing Catalogue Service') {
-                steps {
-                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'catalogue'
-                }
-            }
-            stage ('Installing User Service') {
-                steps {
-                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'user'
-                }
-            }
-            stage ('Installing Shipping Service') {
-                steps {
-                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'shipping'
-                }
-            }
-            stage ('Installing Payment Service') {
-                steps {
-                    ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'payment'
-                    }
-                }
-            }
-        }
+    //     stage ('Installing Roboshop MicroServices') {
+    //         // Cart Catalogue User Shipping
+    //         when {
+    //             anyof {
+    //                 expression{params.Ansible == "CreateInfra"}
+    //                 expression{params.Ansible == "CreateApp"}
+    //             }
+    //         }
+    //         parallel {
+    //         stage ('Installing Cart Service') {
+    //             steps {
+    //                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'cart'
+    //             }
+    //         }
+    //         stage ('Installing Catalogue Service') {
+    //             steps {
+    //                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'catalogue'
+    //             }
+    //         }
+    //         stage ('Installing User Service') {
+    //             steps {
+    //                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'user'
+    //             }
+    //         }
+    //         stage ('Installing Shipping Service') {
+    //             steps {
+    //                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'shipping'
+    //             }
+    //         }
+    //         stage ('Installing Payment Service') {
+    //             steps {
+    //                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'payment'
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        stage ('Installing Web Components') {
-            // Nginx Web Server
-            when {
-                anyof {
-                    expression{params.Ansible == "CreateInfra"}
-                    expression{params.Ansible == "CreateApp"}
-                }
-            }
-            steps {
-                ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'frontend'
-            }
-        }
+    //     stage ('Installing Web Components') {
+    //         // Nginx Web Server
+    //         when {
+    //             anyof {
+    //                 expression{params.Ansible == "CreateInfra"}
+    //                 expression{params.Ansible == "CreateApp"}
+    //             }
+    //         }
+    //         steps {
+    //             ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'frontend'
+    //         }
+    //     }
     }
 }

@@ -16,8 +16,8 @@ pipeline {
         stage('Create Infrastructure') {
             when {
                 anyof {
-                    expression {params.Ansible == "CreateInfra"}
-                    expression {params.Ansible == "CreateApp"}
+                    params.Ansible == "CreateInfra"
+                    params.Ansible == "CreateApp"
                 }
             }
             // tools {terraform 'terraform'}
@@ -47,8 +47,8 @@ pipeline {
         stage('Make Ansible Inventery') {
             when {
                 anyof {
-                    expression {params.Ansible == "CreateInfra"}
-                    expression {params.Ansible == "CreateApp"}
+                    params.Ansible == "CreateInfra"
+                    params.Ansible == "CreateApp"
                 }
             }
             steps {
@@ -68,8 +68,8 @@ pipeline {
         stage ('Installing DB & Cache Service') {
             when {
                 anyof {
-                    expression {params.Ansible == "CreateInfra"}
-                    expression {params.Ansible == "CreateApp"}
+                    params.Ansible == "CreateInfra"
+                    params.Ansible == "CreateApp"
                 }
             }
             parallel {
@@ -90,8 +90,8 @@ pipeline {
             // Cart Catalogue User Shipping
             when {
                 anyof {
-                    expression {params.Ansible == "CreateInfra"}
-                    expression {params.Ansible == "CreateApp"}
+                    params.Ansible == "CreateInfra"
+                    params.Ansible == "CreateApp"
                 }
             }
             parallel {
@@ -127,8 +127,8 @@ pipeline {
             // Nginx Web Server
             when {
                 anyof {
-                    expression {params.Ansible == "CreateInfra"}
-                    expression {params.Ansible == "CreateApp"}
+                    params.Ansible == "CreateInfra"
+                    params.Ansible == "CreateApp"
                 }
             }
             steps {

@@ -1,6 +1,0 @@
-TASK [payment : Installing required packages] **********************************
-fatal: [18.232.141.246]: FAILED! => {"changed": false, "failures": ["No package python36 available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}
-
-
-TASK [rabbitmq : Installing Erlang Package] ************************************
-fatal: [3.80.253.116]: FAILED! => {"changed": false, "failures": ["No package erlang available."], "msg": "Failed to install some of the specified packages", "rc": 1, "results": []}

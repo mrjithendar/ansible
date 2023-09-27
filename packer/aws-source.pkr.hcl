@@ -14,7 +14,7 @@ source "amazon-ebs" "amazonLinux2" {
   source_ami     = "ami-0cdb8266fcd5d3d63" #"ami-00c6177f250e07ec1" #"ami-03a6eaae9938c858c" #data.amazon-ami.amazonLinux2.id
 //   user_data_file = "./scripts/script.sh"
   ssh_port = 22
-  ssh_username = "ec2-user"
+  ssh_username = "centos" #"ec2-user"
 
 #   launch_block_device_mappings {
 #     device_name           = "/dev/sda1"

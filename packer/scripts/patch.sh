@@ -22,7 +22,7 @@ sudo systemctl restart sshd
 sudo yum -y install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
 sudo yum -y groupinstall "Development Tools"
 
-sudo amazon-linux-extras install epel -y
+# sudo amazon-linux-extras install epel -y
 
 curl -O https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py --user

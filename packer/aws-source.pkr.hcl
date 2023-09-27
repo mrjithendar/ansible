@@ -11,7 +11,7 @@ source "amazon-ebs" "amazonLinux2" {
   ami_name       = "roboshop-{{timestamp}}"
   instance_type  = "t3.large"
   region         = var.aws_region
-  source_ami     = "ami-00c6177f250e07ec1" #"ami-03a6eaae9938c858c" #data.amazon-ami.amazonLinux2.id
+  source_ami     = "ami-0cdb8266fcd5d3d63" #"ami-00c6177f250e07ec1" #"ami-03a6eaae9938c858c" #data.amazon-ami.amazonLinux2.id
 //   user_data_file = "./scripts/script.sh"
   ssh_port = 22
   ssh_username = "ec2-user"

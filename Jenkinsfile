@@ -28,7 +28,12 @@ pipeline {
         }
 
         stage('Create Infrastructure') {
-            when { expression {params.Ansible == "CreateInfra" } }
+            when {
+                anyof {
+                    { expression {params.Ansible == "CreateInfra"} }
+                    { expression {params.Ansible == "CreateApp"} }
+                }
+            }
             // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
@@ -55,7 +60,12 @@ pipeline {
         }
 
         stage('Make Ansible Inventery') {
-            when { expression {params.Ansible == "CreateApp" } }
+            when {
+                anyof {
+                    { expression {params.Ansible == "CreateInfra"} }
+                    { expression {params.Ansible == "CreateApp"} }
+                }
+            }
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     sh "sleep 10" // let the ec2 instances fully ready
@@ -71,7 +81,12 @@ pipeline {
         }
 
         stage ('Installing DB & Cache Service') {
-            when { expression {params.Ansible == "CreateApp"} }
+            when {
+                anyof {
+                    { expression {params.Ansible == "CreateInfra"} }
+                    { expression {params.Ansible == "CreateApp"} }
+                }
+            }
             parallel {
                 stage ('Istalling MongoDB') {
                     steps {
@@ -88,7 +103,12 @@ pipeline {
 
         stage ('Installing Roboshop MicroServices') {
             // Cart Catalogue User Shipping
-            when { expression {params.Ansible == "CreateApp" } }
+            when {
+                anyof {
+                    { expression {params.Ansible == "CreateInfra"} }
+                    { expression {params.Ansible == "CreateApp"} }
+                }
+            }
             parallel {
             stage ('Installing Cart Service') {
                 steps {
@@ -120,7 +140,12 @@ pipeline {
 
         stage ('Installing Web Components') {
             // Nginx Web Server
-            when { expression {params.Ansible == "CreateApp" } }
+            when {
+                anyof {
+                    { expression {params.Ansible == "CreateInfra"} }
+                    { expression {params.Ansible == "CreateApp"} }
+                }
+            }
             steps {
                 ansiblePlaybook installation: 'ansible', inventory: 'inv', playbook: 'roboshop.yml', tags: 'frontend'
             }

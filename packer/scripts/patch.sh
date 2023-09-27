@@ -20,7 +20,8 @@ echo "Jithendar" | sudo passwd --stdin root
 sudo systemctl restart sshd
 echo "sshd restarted, root user can login with password"
 
-sudo yum -y install git vim zip jq wget make cmake gcc bzip2-devel libffi-devel zlib-devel openssl-devel 
+echo "installing DevTools"
+sudo yum -y install git vim zip jq wget cmake bzip2-devel libffi-devel zlib-devel openssl-devel
 sudo yum -y groupinstall "Development Tools"
 
 # sudo amazon-linux-extras install epel -y
@@ -29,6 +30,12 @@ echo "installing Python and pip3"
 sudo yum install python3.11 python3-pip
 # curl -O https://bootstrap.pypa.io/get-pip.py
 # python3 get-pip.py --user
+
+sudo yum update -y
+sudo yum upgrade -y
+
+echo "Installing Roboshop required tools"
+sudo yum install -y make gcc gcc-c++ python3-devel
 
 sudo yum update -y
 sudo yum upgrade -y

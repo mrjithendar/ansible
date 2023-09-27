@@ -16,10 +16,8 @@ pipeline {
         stage('Create Infrastructure') {
             when {
                 anyOf {
-                    // expression {
-                    params.Ansible == "CreateInfra"
-                    params.Ansible == "CreateApp"
-                    // }
+                    expression {params.Ansible == "CreateInfra"}
+                    expression {params.Ansible == "CreateApp"}
                 }
             }
             // tools {terraform 'terraform'}

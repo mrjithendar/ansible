@@ -3,12 +3,12 @@
     name: common
     tasks_from: os
 
-# - name: install epel-release
-#   yum:
-#     name: 
-#       - "{{EPEL_RELEASE7}}"
-#       - yum-utils
-#     state: present
+- name: install epel-release
+  yum:
+    name: 
+      - "{{EPEL_RELEASE7}}"
+      - yum-utils
+    state: present
 
 - name: Adding Repo files
   yum: 

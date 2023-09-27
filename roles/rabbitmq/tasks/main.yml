@@ -3,10 +3,10 @@
     name: common
     tasks_from: os
    
-#- name: Installing erlang repos
-#  shell: |
-#    curl -s {{Erlang}} | sudo bash
-#    yum clean all && yum -y makecache
+- name: Installing erlang repos
+  shell: |
+    curl -s {{Erlang}} | sudo bash
+    yum clean all && yum -y makecache
 
 - name: Installing Erlang Package
   yum: 

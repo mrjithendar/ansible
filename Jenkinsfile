@@ -16,8 +16,8 @@ pipeline {
         stage('Create Infrastructure') {
             when {
                 anyof {
-                    { expression {params.Ansible == "CreateInfra"} }
-                    { expression {params.Ansible == "CreateApp"} }
+                    expression {params.Ansible == "CreateInfra"}
+                    expression {params.Ansible == "CreateApp"}
                 }
             }
             // tools {terraform 'terraform'}
@@ -34,7 +34,6 @@ pipeline {
 
         stage('Delete Infra with Terraform') {
             when { expression {params.Ansible == "DeleteInfra" } }
-            // tools {terraform 'terraform'}
             steps {
                 withAWS(credentials: 'AWSCred', region: "${region}") {
                     sh "terraform --version"
@@ -48,8 +47,8 @@ pipeline {
         stage('Make Ansible Inventery') {
             when {
                 anyof {
-                    { expression {params.Ansible == "CreateInfra"} }
-                    { expression {params.Ansible == "CreateApp"} }
+                    expression {params.Ansible == "CreateInfra"}
+                    expression {params.Ansible == "CreateApp"}
                 }
             }
             steps {
@@ -69,8 +68,8 @@ pipeline {
         stage ('Installing DB & Cache Service') {
             when {
                 anyof {
-                    { expression {params.Ansible == "CreateInfra"} }
-                    { expression {params.Ansible == "CreateApp"} }
+                    expression {params.Ansible == "CreateInfra"}
+                    expression {params.Ansible == "CreateApp"}
                 }
             }
             parallel {
@@ -91,8 +90,8 @@ pipeline {
             // Cart Catalogue User Shipping
             when {
                 anyof {
-                    { expression {params.Ansible == "CreateInfra"} }
-                    { expression {params.Ansible == "CreateApp"} }
+                    expression {params.Ansible == "CreateInfra"}
+                    expression {params.Ansible == "CreateApp"}
                 }
             }
             parallel {
@@ -128,8 +127,8 @@ pipeline {
             // Nginx Web Server
             when {
                 anyof {
-                    { expression {params.Ansible == "CreateInfra"} }
-                    { expression {params.Ansible == "CreateApp"} }
+                    expression {params.Ansible == "CreateInfra"}
+                    expression {params.Ansible == "CreateApp"}
                 }
             }
             steps {

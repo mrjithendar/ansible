@@ -1,0 +1,96 @@
+# - name: Create {{COMPONENT}} group
+#   group:
+#     name: "{{COMPONENT}}"
+#     state: present
+
+# - name: Create {{COMPONENT}} User
+#   user:
+#     name: "{{COMPONENT}}"
+#     comment: "{{COMPONENT}}"
+#     group: "{{COMPONENT}}"
+#     create_home: false
+#     system: true
+
+# - name: Create {{COMPONENT}} Artifact Directory
+#   file:
+#     state: directory
+#     path: /tmp/{{COMPONENT}}
+
+- name: Installing {{COMPONENT}} required packages
+  yum:
+    name: 
+      - epel-release
+      - yum-utils
+      # - gcc
+      # - tcl
+      # - make
+      # - wget
+      - redis
+    state: present
+
+# - name: Download Redis Artifacts
+#   shell: |
+#     curl -L {{REDISARTIFACTS}} -o /tmp/redis/redis.zip
+
+# - name: Extracting Redis Artifacts
+#   unarchive:
+#     src: /tmp/redis/redis.zip
+#     dest: /tmp/redis/
+#     remote_src: yes
+
+# - name: Extracting {{COMPONENT}} package
+  # alternativelye we can download file from https://download.redis.io/releases/redis-2.8.0.tar.gz
+  # wget https://download.redis.io/releases/redis-2.8.0.tar.gz
+  # tar -xvzf redis-2.8.0.tar.gz
+  # unarchive:
+  #   src: /tmp/redis/redis-2.8.0.tar.gz
+  #   dest: /tmp/redis/
+  #   remote_src: yes
+
+# - name: Installing {{COMPONENT}} server
+#   shell: |
+#     make
+#     make install
+#   args:
+#     chdir: /tmp/redis/{{COMPONENT}}-2.8.0
+
+# - name: Creating directory /etc/{{COMPONENT}}
+#   file:
+#     path: /etc/{{COMPONENT}}
+#     state: directory
+    
+# - name: Copying {{COMPONENT}} config file to /etc/{{COMPONENT}}/
+#   copy:
+#     src: /tmp/redis/{{COMPONENT}}-2.8.0/{{COMPONENT}}.conf
+#     dest: /etc/{{COMPONENT}}/{{COMPONENT}}.conf
+#     remote_src: yes
+
+# - name: Adding the {{COMPONENT}} service
+#   template:
+#    src: "{{COMPONENT}}.service"
+#    dest: /etc/systemd/system/{{COMPONENT}}.service
+
+# - name: Configuring memory settings
+  # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. 
+  # To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf 
+  # and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+  # shell: sysctl vm.overcommit_memory=1
+
+- name: Configuring {{COMPONENT}} .conf file
+  replace:
+    # path: /etc/{{COMPONENT}}/{{COMPONENT}}.conf
+    path: /etc/redis.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: Starting {{COMPONENT}} service
+  systemd:
+   daemon_reload: yes
+   enabled: yes
+   state: restarted
+   name: "{{COMPONENT}}"
+
+# - name: Delete {{COMPONENT}} Artifact Directory
+#   file:
+#     state: absent
+#     path: /tmp/{{COMPONENT}}

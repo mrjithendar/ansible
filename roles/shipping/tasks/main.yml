@@ -1,47 +1,68 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
-   
-- name: Create Application User
-  user:
-    name: roboshop
-    comment: roboshop
+---
+- name: Build the shipping jar on the controller
+  ansible.builtin.command:
+    cmd: mvn -B -q clean package -DskipTests
+    chdir: "{{ shipping_src_dir }}"
+    creates: "{{ shipping_jar }}"
+  delegate_to: localhost
+  become: false
+  run_once: true
 
-- name: Make {{COMPONENT}} Folder
-  file: 
-    path: /home/roboshop/{{COMPONENT}}
+- name: Install Java and the MySQL client
+  ansible.builtin.dnf:
+    name:
+      - "{{ shipping_java_package }}"
+      - mysql
+      - python3-PyMySQL
+    state: present
+
+- name: Create the shipping directory
+  ansible.builtin.file:
+    path: "{{ shipping_app_dir }}"
     state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0755"
 
-- name: Download and Extract Artifacts
-  copy:
-   src: files/
-   dest: /home/roboshop/shipping
+- name: Copy the shipping jar
+  ansible.builtin.copy:
+    src: "{{ shipping_jar }}"
+    dest: "{{ shipping_app_dir }}/shipping.jar"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0644"
+  notify: Restart shipping
 
-- name: Installing Maven 
-  yum:
-    name: maven
-    state: latest
-  
-- name: Maven Clean Package
-  shell: mvn clean package 
-  args:
-    chdir: /home/roboshop/{{COMPONENT}}
+- name: Load the schema and create the app user in Aurora
+  ansible.builtin.include_tasks: schema.yml
+  vars:
+    shipping_db_login_host: "{{ shipping_db_host }}"
+    shipping_db_login_user: "{{ shipping_db_admin_user }}"
+    shipping_db_login_password: "{{ shipping_db_admin_password }}"
+  when: roboshop_mysql_mode == 'rds'
 
-- name: Adding Shipping.jar file
-  copy:
-    src: /home/roboshop/{{COMPONENT}}/target/shipping-1.0.jar
-    dest: /home/roboshop/{{COMPONENT}}/shipping.jar
-    remote_src: yes
+- name: Write the shipping environment file
+  ansible.builtin.template:
+    src: shipping.env.j2
+    dest: /etc/roboshop/shipping.env
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  notify: Restart shipping
 
-- name: Add {{COMPONENT}} service file
-  template:
-   src: shipping.service
-   dest: /etc/systemd/system/shipping.service
-   
-- name: Starting {{COMPONENT}} services
-  systemd: 
-   daemon_reload: yes
-   enabled: yes
-   state: restarted
-   name: "{{COMPONENT}}"
+- name: Install the shipping systemd unit
+  ansible.builtin.template:
+    src: shipping.service.j2
+    dest: /etc/systemd/system/shipping.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart shipping
+
+- name: Enable and start shipping
+  ansible.builtin.systemd_service:
+    name: shipping
+    enabled: true
+    state: started
+    daemon_reload: true

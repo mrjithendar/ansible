@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+[Unit]
+Description=RoboShop Cart Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ app_user }}
+WorkingDirectory={{ cart_app_dir }}
+Environment="REDIS_HOST=redis.{{ roboshop_domain }}"
+Environment="CATALOGUE_HOST=catalogue.{{ roboshop_domain }}"
+ExecStart=/usr/bin/node --no-deprecation {{ cart_app_dir }}/server.js
+Restart=on-failure
+SyslogIdentifier=cart
+
+[Install]
+WantedBy=multi-user.target

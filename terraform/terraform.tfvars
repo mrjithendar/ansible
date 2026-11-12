@@ -9,14 +9,15 @@ COMPONENT = [
   "frontend"
 ]
 
-instancetype  = "t2.micro"
+instancetype  = "t3.micro"
 REGION        = "us-east-1"
-amazonami     = "ami-04cb4ca688797756f"
-keypair       = "roboshop"
-centos8ami    = "ami-0cdb8266fcd5d3d63" 
 environment   = "test"
 email         = "i@jithendar"
 userid        = "jdharmapuri"
 vpc_cidr      = "10.0.0.0/16"
 key_pair_name = "roboshopkey"
-level         = "pro" 
+level         = "pro"
+
+# SSH is only allowed from these CIDRs. Replace with your Jenkins agent's and
+# workstation's public IPs (e.g. "203.0.113.10/32"); plan fails until you do.
+admin_cidrs = ["CHANGE_ME/32"]

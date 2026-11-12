@@ -1,61 +1,46 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
-   
-- name: Installing NGiNX Server
-  yum:
+---
+- name: Install nginx
+  ansible.builtin.dnf:
     name: nginx
-    state: latest
+    state: present
 
-- name: Delete default NGiNX Content
-  file:
-    state: absent
-    path: /usr/share/nginx/
+- name: Allow nginx to proxy to the backend services (SELinux)
+  ansible.posix.seboolean:
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+  when: ansible_facts.selinux.status | default('disabled') == 'enabled'
 
-- name: Create NGiNX Deirecory
-  file:
-    state: directory
-    path: /usr/share/nginx/
+- name: Copy the web content
+  ansible.builtin.copy:
+    src: html/
+    dest: /usr/share/nginx/html/
+    owner: root
+    group: root
+    mode: "0644"
+    directory_mode: "0755"
 
-- name: Copy Web Files
-  copy:
-    src: html
-    force: yes
-    dest: /usr/share/nginx/
-
-# - name: Deploying WebApplication (frontend server)
-#   copy:
-#     src: html/
-#     dest: /usr/share/nginx/html/
-#     force: yes
-#     directory_mode: any
-  #   checksum:
-  # register: copy_out
-
-# - name: Fail if copy was a failure
-#   fail:
-#     msg: "Copy failed!"
-#   when: src_info.stat.checksum != copy_out.checksum
-
-# - name: Print Copy successful
-#   debug:
-#     msg: "Copy Successful!"
-
-- name: Setup /etc/nginx/default.d/roboshop.conf
-  template:
+- name: Install the RoboShop proxy config
+  ansible.builtin.template:
     src: roboshop.conf
     dest: /etc/nginx/default.d/roboshop.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload nginx
 
-- name: Update Nginx Configuration
-  template:
-   src: nginx.conf
-   dest: /etc/nginx/nginx.conf
+- name: Install nginx.conf
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "0644"
+    validate: nginx -t -c %s
+  notify: Reload nginx
 
-- name: Starting nginx services
-  systemd: 
-   daemon_reload: yes
-   enabled: yes
-   state: restarted
-   name: nginx
-  ignore_errors: true
+- name: Enable and start nginx
+  ansible.builtin.systemd_service:
+    name: nginx
+    enabled: true
+    state: started

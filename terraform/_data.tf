@@ -1,11 +1,15 @@
-#Centos-7-DevOps-Practice - ami-059e6ca6474628ef0
-
+# Base OS for every component host: Rocky Linux 9 (official AMI).
+# Override ami_owner / ami_name_filter to use your own golden image.
 data "aws_ami" "ami" {
   most_recent = true
-  owners      = ["826334059644"] #["973714476881"]
+  owners      = [var.ami_owner]
   filter {
     name   = "name"
-    values = ["roboshop-*"]
+    values = [var.ami_name_filter]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
   }
 }
 
@@ -20,14 +24,6 @@ data "aws_secretsmanager_secret_version" "rdscreds" {
 
 data "aws_region" "current" {}
 data "aws_caller_identity" "current" {}
-
-data "aws_subnets" "eks_subnets" {
-  depends_on = [aws_subnet.private_subnets, aws_vpc.roboshop] #aws_subnet.public_subnets, 
-  filter {
-    name   = "vpc-id"
-    values = [aws_vpc.roboshop.id]
-  }
-}
 
 data "aws_availability_zones" "azs" {
   # excluded us-east-1e availability zone

@@ -1,41 +1,49 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
-   
-- name: Installing erlang repos
-  shell: |
-    curl -s {{Erlang}} | sudo bash
-    yum clean all && yum -y makecache
+---
+- name: Import the RabbitMQ signing keys
+  ansible.builtin.rpm_key:
+    key: "{{ item }}"
+    state: present
+  loop: "{{ rabbitmq_signing_keys }}"
 
-- name: Installing Erlang Package
-  yum: 
-    name: erlang
-    state: latest
+- name: Add the RabbitMQ and Erlang repositories
+  ansible.builtin.yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.name }}"
+    baseurl: "{{ item.baseurl }}"
+    repo_gpgcheck: true
+    gpgcheck: true
+    gpgkey:
+      - "{{ item.gpgkey }}"
+      - "{{ rabbitmq_signing_keys[0] }}"
+    sslverify: true
+    mode: "0644"
+  loop: "{{ rabbitmq_repos }}"
+  loop_control:
+    label: "{{ item.name }}"
 
-- name: Adding RabbitMQ Repo
-  shell: |
-    curl -s {{RabbitMQ_Repository}} | sudo bash
+- name: Install Erlang and RabbitMQ
+  ansible.builtin.dnf:
+    name:
+      - socat
+      - logrotate
+      - erlang
+      - rabbitmq-server
+    state: present
 
-- name: Installing RabbitMQ Server
-  yum: 
+- name: Enable and start RabbitMQ
+  ansible.builtin.systemd_service:
     name: rabbitmq-server
-    state: latest
-
-- name: Start RabbitMQ service
-  systemd:
-    daemon_reload: yes
-    name: rabbitmq-server
+    enabled: true
     state: started
-    enabled: yes
 
-- name: Adding RabbitMQ user for Application
-  shell: |
-    rabbitmqctl add_user roboshop roboshop123
-    rabbitmqctl set_user_tags roboshop administrator
-    rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
-
-- name: reStart RabbitMQ service
-  systemd:
-    name: rabbitmq-server
-    state: restarted
+- name: Create the application user
+  community.rabbitmq.rabbitmq_user:
+    user: "{{ rabbitmq_app_user }}"
+    password: "{{ rabbitmq_app_password }}"
+    update_password: always
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
+  no_log: true

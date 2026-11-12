@@ -30,7 +30,7 @@ resource "aws_elasticache_replication_group" "roboshop" {
   transit_encryption_enabled = false //TODO Enable encryption 
   #  auth_token                 = var.elasticache_auth_token //only supported when encryption-in-transit
   kms_key_id         = aws_kms_key.roboshop.arn
-  security_group_ids = [aws_security_group.roboshop.id]
+  security_group_ids = [aws_security_group.data.id]
   log_delivery_configuration {
     destination      = aws_cloudwatch_log_group.roboshop_redis_logs.name
     destination_type = "cloudwatch-logs"

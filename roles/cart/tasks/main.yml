@@ -1,63 +1,48 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
+---
+- name: Install Node.js
+  ansible.builtin.include_role:
     name: common
-    tasks_from: os
+    tasks_from: nodejs
 
-# - name: set host name and shutdown behaviour for {{COMPONENT}}
-#   shell: |
-#     set-hostname {{COMPONENT}}
-#     disable-auto-shutdown
-   
-- name: Installing required packages
-  yum:
-    name: 
-      - nodejs
-      - make
-      - gcc-c++
-      - npm 
-    state: latest
-
-# - name: Create Application User
-#   user:
-#     name: roboshop
-#     comment: Robo Shop
-
-- name: Make {{COMPONENT}} Folder
-  file:
-    path: /home/roboshop/{{COMPONENT}}
+- name: Create the cart directory
+  ansible.builtin.file:
+    path: "{{ cart_app_dir }}"
     state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0755"
 
-- name: Download and Extract Artifacts
-  copy:
-   src: files/
-   dest: /home/roboshop/{{COMPONENT}}
+- name: Copy the cart application
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ cart_app_dir }}/{{ item }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0644"
+  loop:
+    - server.js
+    - package.json
+  notify: Restart cart
 
-- name: Installing NodeJS dependencies
-  npm:
-    path: /home/roboshop/{{COMPONENT}}
-    state: latest
+- name: Install cart npm dependencies
+  community.general.npm:
+    path: "{{ cart_app_dir }}"
+    production: true
+  become_user: "{{ app_user }}"
+  notify: Restart cart
 
-# - name: Download NodeJS dependencies
-#   shell: npm install
-#   args:
-#     chdir: /home/roboshop/{{COMPONENT}}
-#   become_user: roboshop
+- name: Install the cart systemd unit
+  ansible.builtin.template:
+    src: cart.service.j2
+    dest: /etc/systemd/system/cart.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart cart
 
-# - name: Installing NodeJS dependencies
-#   shell: |
-#     cd /home/roboshop/{{COMPONENT}}
-#     npm install
-
-#Update packages based on package.json to their latest version.
-  
-- name: Add cart.service file
-  template:
-   src: cart.service
-   dest: /etc/systemd/system/cart.service
-   
-- name: Starting cart services
-  systemd: 
-   daemon_reload: yes
-   enabled: yes
-   state: restarted
-   name: cart
+- name: Enable and start cart
+  ansible.builtin.systemd_service:
+    name: cart
+    enabled: true
+    state: started
+    daemon_reload: true

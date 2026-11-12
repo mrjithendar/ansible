@@ -1,43 +1,64 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
-   
-- name: Installing required packages
-  yum:
-    name: 
-      - python36
-      - gcc 
+---
+- name: Install Python and build tools
+  ansible.builtin.dnf:
+    name:
+      - python3
       - python3-devel
-    state: latest
-    
-- name: User App user
-  user:
-    name: roboshop
-    comment: roboshop user
+      - gcc
+    state: present
 
-- name: Make {{COMPONENT}} Directory
-  file:
-    path: /home/roboshop/{{COMPONENT}}
+- name: Create the payment directory
+  ansible.builtin.file:
+    path: "{{ payment_app_dir }}"
     state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0755"
 
-- name: Download Repo files
-  copy:
-    src: files/
-    dest: /home/roboshop/{{COMPONENT}}
+- name: Copy the payment application
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ payment_app_dir }}/{{ item }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0644"
+  loop:
+    - payment.py
+    - rabbitmq.py
+    - payment.ini
+    - requirements.txt
+  notify: Restart payment
 
-- name: Install Python Packages with requirements.txt file
-  pip:
-    requirements: /home/roboshop/{{COMPONENT}}/requirements.txt
+- name: Install Python dependencies into a virtualenv
+  ansible.builtin.pip:
+    requirements: "{{ payment_app_dir }}/requirements.txt"
+    virtualenv: "{{ payment_venv }}"
+    virtualenv_command: python3 -m venv
+  become_user: "{{ app_user }}"
+  notify: Restart payment
 
-- name: Update the roboshop user and group id in payment.ini file
-  template:
-   src: payment.service 
-   dest: /etc/systemd/system/payment.service
+- name: Write the payment environment file
+  ansible.builtin.template:
+    src: payment.env.j2
+    dest: /etc/roboshop/payment.env
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  notify: Restart payment
 
-- name: Start Payment Services
-  systemd:
-   daemon_reload: yes
-   enabled: yes
-   state: restarted
-   name: payment 
+- name: Install the payment systemd unit
+  ansible.builtin.template:
+    src: payment.service.j2
+    dest: /etc/systemd/system/payment.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart payment
+
+- name: Enable and start payment
+  ansible.builtin.systemd_service:
+    name: payment
+    enabled: true
+    state: started
+    daemon_reload: true

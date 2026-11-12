@@ -1,0 +1,8 @@
+---
+- name: Install Node.js and build tools, stream {{ nodejs_stream }}
+  ansible.builtin.dnf:
+    name:
+      - "@nodejs:{{ nodejs_stream }}/common"
+      - make
+      - gcc-c++
+    state: present

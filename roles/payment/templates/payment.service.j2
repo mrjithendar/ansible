@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+[Unit]
+Description=RoboShop Payment Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ app_user }}
+WorkingDirectory={{ payment_app_dir }}
+EnvironmentFile=/etc/roboshop/payment.env
+ExecStart={{ payment_venv }}/bin/uwsgi --ini payment.ini
+Restart=on-failure
+SyslogIdentifier=payment
+
+[Install]
+WantedBy=multi-user.target

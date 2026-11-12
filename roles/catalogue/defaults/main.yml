@@ -1,0 +1,2 @@
+---
+catalogue_app_dir: "{{ app_base_dir }}/catalogue"

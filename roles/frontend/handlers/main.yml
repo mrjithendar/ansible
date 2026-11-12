@@ -1,0 +1,12 @@
+---
+# Check the full config first so a bad include never reaches a running nginx.
+- name: Check nginx config
+  ansible.builtin.command: nginx -t
+  changed_when: false
+  listen: Reload nginx
+
+- name: Reload nginx service
+  ansible.builtin.systemd_service:
+    name: nginx
+    state: reloaded
+  listen: Reload nginx

@@ -13,7 +13,7 @@ public class JpaConfig {
 
     @Bean
     public DataSource getDataSource() {
-        String JDBC_URL = String.format("jdbc:mysql://%s/cities?useSSL=false&autoReconnect=true", System.getenv("DB_HOST") == null ? "mysql" : System.getenv("DB_HOST"));
+        String JDBC_URL = String.format("jdbc:mysql://%s/cities?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true", envOrDefault("DB_HOST", "mysql"));
 
         logger.info("jdbc url {}", JDBC_URL);
 
@@ -21,9 +21,14 @@ public class JpaConfig {
 
         bob.driverClassName("com.mysql.jdbc.Driver");
         bob.url(JDBC_URL);
-        bob.username("shipping");
-        bob.password("secret");
+        bob.username(envOrDefault("DB_USER", "shipping"));
+        bob.password(envOrDefault("DB_PASSWD", "secret"));
 
         return bob.build();
+    }
+
+    private static String envOrDefault(String key, String def) {
+        String val = System.getenv(key);
+        return (val == null || val.isEmpty()) ? def : val;
     }
 }

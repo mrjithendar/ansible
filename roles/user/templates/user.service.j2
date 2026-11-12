@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+[Unit]
+Description=RoboShop User Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ app_user }}
+WorkingDirectory={{ user_app_dir }}
+Environment="REDIS_HOST=redis.{{ roboshop_domain }}"
+Environment="MONGO_URL=mongodb://mongodb.{{ roboshop_domain }}:27017/users"
+ExecStart=/usr/bin/node --no-deprecation {{ user_app_dir }}/server.js
+Restart=on-failure
+SyslogIdentifier=user
+
+[Install]
+WantedBy=multi-user.target

@@ -37,7 +37,7 @@ resource "aws_subnet" "private_subnets" {
 }
 
 resource "aws_eip" "eip" {
-  # vpc = true
+  domain = "vpc"
   tags = (merge(local.common_tags, tomap({
     "Name"    = "${local.name_prefix}-eip-${var.environment}",
     "Purpose" = "${local.common_tags["Team"]} eip"
@@ -88,13 +88,11 @@ resource "aws_route_table" "pl_rt" {
 }
 
 resource "aws_route_table_association" "pl_rta_1" {
-  count          = length(data.aws_availability_zones.azs.names)
   subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.pl_rt.id
 }
 
 resource "aws_route_table_association" "pl_rta_2" {
-  count          = length(data.aws_availability_zones.azs.names)
   subnet_id      = aws_subnet.public_subnet_2.id
   route_table_id = aws_route_table.pl_rt.id
 }

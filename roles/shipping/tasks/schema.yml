@@ -1,0 +1,55 @@
+---
+# Loads the cities schema once and creates the shipping DB user.
+# Used by this role (Aurora) and by the mysql role (self-hosted).
+# Expects shipping_db_login_host or shipping_db_login_unix_socket, plus
+# shipping_db_login_user / shipping_db_login_password.
+
+- name: Check whether the cities schema is already loaded
+  community.mysql.mysql_query:
+    login_host: "{{ shipping_db_login_host | default(omit) }}"
+    login_unix_socket: "{{ shipping_db_login_unix_socket | default(omit) }}"
+    login_user: "{{ shipping_db_login_user }}"
+    login_password: "{{ shipping_db_login_password }}"
+    query: >-
+      SELECT COUNT(*) AS n FROM information_schema.tables
+      WHERE table_schema = %s AND table_name = 'cities'
+    positional_args:
+      - "{{ shipping_db_name }}"
+  register: shipping_schema_check
+  changed_when: false
+
+- name: Load the schema
+  when: shipping_schema_check.query_result[0][0].n | int == 0
+  block:
+    - name: Copy the schema dump
+      ansible.builtin.copy:
+        src: schema/shipping.sql.gz
+        dest: /tmp/shipping.sql.gz
+        mode: "0600"
+
+    - name: Import the schema
+      community.mysql.mysql_db:
+        name: "{{ shipping_db_name }}"
+        state: import
+        target: /tmp/shipping.sql.gz
+        login_host: "{{ shipping_db_login_host | default(omit) }}"
+        login_unix_socket: "{{ shipping_db_login_unix_socket | default(omit) }}"
+        login_user: "{{ shipping_db_login_user }}"
+        login_password: "{{ shipping_db_login_password }}"
+
+  always:
+    - name: Remove the schema dump
+      ansible.builtin.file:
+        path: /tmp/shipping.sql.gz
+        state: absent
+
+- name: Create the shipping DB user
+  community.mysql.mysql_user:
+    name: "{{ shipping_db_user }}"
+    host: "%"
+    password: "{{ shipping_db_password }}"
+    priv: "{{ shipping_db_name }}.*:ALL"
+    login_host: "{{ shipping_db_login_host | default(omit) }}"
+    login_unix_socket: "{{ shipping_db_login_unix_socket | default(omit) }}"
+    login_user: "{{ shipping_db_login_user }}"
+    login_password: "{{ shipping_db_login_password }}"

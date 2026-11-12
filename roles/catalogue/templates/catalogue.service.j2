@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+[Unit]
+Description=RoboShop Catalogue Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ app_user }}
+WorkingDirectory={{ catalogue_app_dir }}
+Environment="MONGO_URL=mongodb://mongodb.{{ roboshop_domain }}:27017/catalogue"
+ExecStart=/usr/bin/node {{ catalogue_app_dir }}/server.js
+Restart=on-failure
+SyslogIdentifier=catalogue
+
+[Install]
+WantedBy=multi-user.target

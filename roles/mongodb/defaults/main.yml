@@ -1,0 +1,6 @@
+---
+mongodb_version: "7.0"
+mongodb_data_dir: "{{ app_base_dir }}/mongodb"
+mongodb_seed_databases:
+  - catalogue
+  - users

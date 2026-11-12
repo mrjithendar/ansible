@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+[Unit]
+Description=RoboShop Shipping Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ app_user }}
+WorkingDirectory={{ shipping_app_dir }}
+EnvironmentFile=/etc/roboshop/shipping.env
+ExecStart=/usr/bin/java -jar {{ shipping_app_dir }}/shipping.jar
+Restart=on-failure
+SyslogIdentifier=shipping
+
+[Install]
+WantedBy=multi-user.target

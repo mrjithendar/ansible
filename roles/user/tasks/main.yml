@@ -1,46 +1,48 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
+---
+- name: Install Node.js
+  ansible.builtin.include_role:
     name: common
-    tasks_from: os
+    tasks_from: nodejs
 
-# - name: set host name and shutdown behaviour for {{COMPONENT}}
-#   shell: |
-#     set-hostname {{COMPONENT}}
-#     disable-auto-shutdown
-    
-# - name: User App user
-#   user:
-#     name: roboshop
-#     comment: roboshop user
+- name: Create the user directory
+  ansible.builtin.file:
+    path: "{{ user_app_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0755"
 
-- name: Download and Extract Artifacts
-  copy:
-    src: files/
-    dest: /home/roboshop/{{COMPONENT}}
+- name: Copy the user application
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ user_app_dir }}/{{ item }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0644"
+  loop:
+    - server.js
+    - package.json
+  notify: Restart user
 
-- name: Installing NodeJs Package Manager
-  yum:
-    name: npm
-    state: present
+- name: Install user npm dependencies
+  community.general.npm:
+    path: "{{ user_app_dir }}"
+    production: true
+  become_user: "{{ app_user }}"
+  notify: Restart user
 
-- name: Download NodeJS dependencies
-  shell: npm install
-  args:
-    chdir: /home/roboshop/{{COMPONENT}}
-
-# - name: Installing NodeJS dependencies
-#   npm:
-#     path: /home/roboshop/{{COMPONENT}}
-#     state: latest
-
-- name: Add {{COMPONENT}} service file
-  template:
-    src: user.service
+- name: Install the user systemd unit
+  ansible.builtin.template:
+    src: user.service.j2
     dest: /etc/systemd/system/user.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart user
 
-- name: Enamble/Start {{COMPONENT}} services
-  systemd:
-    daemon_reload: yes
-    enabled: yes
+- name: Enable and start user
+  ansible.builtin.systemd_service:
     name: user
-    state: restarted 
+    enabled: true
+    state: started
+    daemon_reload: true

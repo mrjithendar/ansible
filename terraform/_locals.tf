@@ -1,6 +1,7 @@
 locals {
   common_tags = merge(local.our_tags, var.level != "" ? tomap({ "Level" = trimprefix(var.level, "-") }) : tomap({}))
   our_tags = {
+    Project      = "roboshop"
     Team         = "JITH"
     Userid       = "${lower(var.userid)}"
     Owner        = "Jithendar"

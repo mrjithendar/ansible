@@ -1,0 +1,18 @@
+---
+# Dynamic inventory: every running RoboShop instance Terraform created,
+# grouped by its Component tag (frontend, cart, mongodb, ...).
+# Needs boto3/botocore on the controller and AWS credentials in the environment.
+plugin: amazon.aws.aws_ec2
+regions:
+  - us-east-1
+filters:
+  tag:Project: roboshop
+  instance-state-name: running
+hostnames:
+  - tag:Name
+compose:
+  ansible_host: public_ip_address
+keyed_groups:
+  - key: tags.Component
+    prefix: ""
+    separator: ""

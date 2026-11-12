@@ -1,0 +1,34 @@
+---
+- name: Set the hostname
+  ansible.builtin.hostname:
+    name: "{{ roboshop_component }}"
+
+- name: Create the application group
+  ansible.builtin.group:
+    name: "{{ app_user }}"
+    system: true
+
+- name: Create the application user
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    group: "{{ app_user }}"
+    system: true
+    create_home: true
+    shell: /sbin/nologin
+    comment: RoboShop application user
+
+- name: Create the application base directory
+  ansible.builtin.file:
+    path: "{{ app_base_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create the directory for service environment files
+  ansible.builtin.file:
+    path: /etc/roboshop
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"

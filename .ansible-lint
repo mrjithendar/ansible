@@ -1,0 +1,19 @@
+---
+profile: production
+
+exclude_paths:
+  - extras/
+  - examples/
+  - .github/
+  - roles/frontend/files/
+  - roles/shipping/files/
+  - terraform/
+
+# Inventory plugin config is not a playbook.
+kinds:
+  - yaml: "inventory/*.yml"
+
+# Role variables are named <role>_*, but shared ones (app_user, ...) come
+# from group_vars on purpose.
+skip_list:
+  - var-naming[no-role-prefix]

@@ -1,0 +1,13 @@
+---
+shipping_app_dir: "{{ app_base_dir }}/shipping"
+shipping_java_package: java-11-openjdk-headless
+# The jar is built once on the controller (Jenkins runs this as its own stage).
+shipping_src_dir: "{{ role_path }}/files"
+shipping_jar: "{{ shipping_src_dir }}/target/shipping-1.0.jar"
+
+shipping_db_host: "mysql.{{ roboshop_domain }}"
+shipping_db_name: cities
+# Admin login used to load the schema and create the app user. For RDS this
+# is the Aurora master user from Secrets Manager.
+shipping_db_admin_user: "{{ rds_admin_creds['SSH_USER'] }}"
+shipping_db_admin_password: "{{ rds_admin_creds['SSH_PASS'] }}"

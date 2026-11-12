@@ -36,10 +36,10 @@ resource "aws_rds_cluster" "roboshop" {
   master_password                     = jsondecode(data.aws_secretsmanager_secret_version.rdscreds.secret_string)["SSH_PASS"]
   backup_retention_period             = var.rds_cluster["db_backup_retention_period"]
   preferred_backup_window             = "07:00-09:00"
-  skip_final_snapshot                 = true
+  skip_final_snapshot                 = true # lab environment; set false + final_snapshot_identifier for anything real
   db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.roboshop.name
   db_subnet_group_name                = aws_db_subnet_group.roboshop.name
-  vpc_security_group_ids              = [aws_security_group.roboshop.id]
+  vpc_security_group_ids              = [aws_security_group.data.id]
   storage_encrypted                   = true
   iam_database_authentication_enabled = true
   apply_immediately                   = true
@@ -68,7 +68,7 @@ resource "aws_rds_cluster_instance" "writer" {
   engine                                = "aurora-mysql"
   monitoring_interval                   = 5
   monitoring_role_arn                   = aws_iam_role.rds_monitoring_role.arn
-  publicly_accessible                   = true # true/false
+  publicly_accessible                   = false
   performance_insights_enabled          = true
   performance_insights_retention_period = 7
   tags = (merge(local.common_tags, tomap({
@@ -91,7 +91,7 @@ resource "aws_rds_cluster_instance" "reader" {
   engine                                = "aurora-mysql"
   monitoring_interval                   = 5
   monitoring_role_arn                   = aws_iam_role.rds_monitoring_role.arn
-  publicly_accessible                   = true # true/false
+  publicly_accessible                   = false
   performance_insights_enabled          = true
   performance_insights_retention_period = 7
   tags = (merge(local.common_tags, tomap({

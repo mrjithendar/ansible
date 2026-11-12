@@ -1,37 +1,21 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
+---
+# Self-hosted alternative. The default Terraform setup uses ElastiCache and
+# does not create a redis instance, so this role normally does not run.
 
-- name: install epel-release
-  yum:
-    name: 
-      - "{{EPEL_RELEASE7}}"
-      - yum-utils
+- name: Install Redis
+  ansible.builtin.dnf:
+    name: redis
     state: present
 
-- name: Adding Repo files
-  yum: 
-    name: "{{REDIS_REPO}}"
-    state: present
+- name: Listen on all interfaces (the security group limits access to the VPC)
+  ansible.builtin.lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^bind '
+    line: bind 0.0.0.0
+  notify: Restart redis
 
-- name: Installing Redis Server
-  yum:
-    name:
-      - redis
-    state: latest
-    enablerepo: remi
-
-- name: Configuring redis.conf file
-  replace:
-    path: /etc/redis.conf
-    regexp: '127.0.0.1'
-    replace: '0.0.0.0'
-
-- name: Starting {{COMPONENT}} services
-  systemd: 
-   daemon_reload: yes
-   enabled: yes
-   state: restarted
-   name: redis
-
+- name: Enable and start Redis
+  ansible.builtin.systemd_service:
+    name: redis
+    enabled: true
+    state: started

@@ -1,0 +1,8 @@
+---
+# Copy to group_vars/all/vault.yml, fill in, then encrypt:
+#   ansible-vault encrypt group_vars/all/vault.yml
+# Commit only the encrypted file.
+vault_rabbitmq_app_password: "change-me"
+vault_shipping_db_password: "change-me"
+# Only needed when roboshop_mysql_mode is self_hosted:
+vault_mysql_root_password: "change-me"

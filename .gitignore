@@ -1,3 +1,28 @@
-terraform/.terraform
-terraform/.terraform.lock.hcl
+# Terraform
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
 planfile
+crash.log
+
+# Keys and secrets
+*.pem
+*.key
+.env
+group_vars/all/vault.yml.decrypted
+
+# Generated inventory (old mkinv.sh output)
+/inv
+
+# Build output
+target/
+node_modules/
+__pycache__/
+*.retry
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

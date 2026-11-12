@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Jithendar Dharmapuri
+  description: MongoDB for the RoboShop catalogue and user services.
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: EL
+      versions:
+        - "9"
+dependencies:
+  - role: common

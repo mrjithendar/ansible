@@ -1,54 +1,48 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
+---
+- name: Install Node.js
+  ansible.builtin.include_role:
     name: common
-    tasks_from: os
-   
-- name: Installing required packages
-  yum:
-    name: 
-      - nodejs
-      - make
-      - gcc-c++
-      - npm 
-    state: latest
-    
-# - name: Add App user
-#   user:
-#     name: roboshop
-#     comment: roboshop user
+    tasks_from: nodejs
 
-- name: Make App Directory
-  shell: mkdir -p /home/roboshop/catalogue
+- name: Create the catalogue directory
+  ansible.builtin.file:
+    path: "{{ catalogue_app_dir }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0755"
 
-- name: Download Component files
-  copy: 
-    src: files/
-    dest: /home/roboshop/catalogue
+- name: Copy the catalogue application
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ catalogue_app_dir }}/{{ item }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: "0644"
+  loop:
+    - server.js
+    - package.json
+  notify: Restart catalogue
 
-- name: Download NodeJS dependencies
-  shell: npm install
-  args:
-    chdir: /home/roboshop/{{COMPONENT}}
-  #become_user: roboshop
+- name: Install catalogue npm dependencies
+  community.general.npm:
+    path: "{{ catalogue_app_dir }}"
+    production: true
+  become_user: "{{ app_user }}"
+  notify: Restart catalogue
 
-# - name: Installing NodeJS dependencies
-#   shell: |
-#     cd /home/roboshop/{{COMPONENT}}
-#     npm install
-
-# - name: Installing NodeJS dependencies
-#   npm:
-#     path: /home/roboshop/{{COMPONENT}}
-#     state: latest
-
-- name: Add {{COMPONENT}} service file
-  template:
-    src: catalogue.service
+- name: Install the catalogue systemd unit
+  ansible.builtin.template:
+    src: catalogue.service.j2
     dest: /etc/systemd/system/catalogue.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart catalogue
 
-- name: Enamble/Start {{COMPONENT}} services
-  systemd:
-    daemon_reload: yes
-    enabled: yes
+- name: Enable and start catalogue
+  ansible.builtin.systemd_service:
     name: catalogue
-    state: restarted 
+    enabled: true
+    state: started
+    daemon_reload: true

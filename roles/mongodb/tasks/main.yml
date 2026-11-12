@@ -1,53 +1,63 @@
-- name: Include Common Role for OS {{COMPONENT}}
-  include_role:
-    name: common
-    tasks_from: os
+---
+- name: Add the MongoDB repository for version {{ mongodb_version }}
+  ansible.builtin.yum_repository:
+    name: mongodb-org-{{ mongodb_version }}
+    description: MongoDB {{ mongodb_version }} Repository
+    baseurl: https://repo.mongodb.org/yum/redhat/9/mongodb-org/{{ mongodb_version }}/x86_64/
+    gpgcheck: true
+    gpgkey: https://pgp.mongodb.com/server-{{ mongodb_version }}.asc
+    mode: "0644"
 
-# - name: set host name and shutdown behaviour for {{COMPONENT}}
-#   shell: |
-#     set-hostname {{COMPONENT}}
-#     disable-auto-shutdown
-   
-- name: Set up {{COMPONENT}} repos
-  template:
-    src: mongo.repo
-    dest: /etc/yum.repos.d/mongo.repo
-
-- name: Install {{COMPONENT}}
-  yum:
+- name: Install MongoDB
+  ansible.builtin.dnf:
     name: mongodb-org
     state: present
 
-- name: Update {{COMPONENT}} configuration file
-  replace:
+- name: Listen on all interfaces (the security group limits access to the VPC)
+  ansible.builtin.lineinfile:
     path: /etc/mongod.conf
-    regexp: '127.0.0.1'
-    replace: '0.0.0.0'
+    regexp: '^(\s*)bindIp:'
+    line: '  bindIp: 0.0.0.0'
+  notify: Restart mongod
 
-- name: Start MongoDB
-  systemd:
-    daemon_reload: yes
+- name: Enable and start mongod
+  ansible.builtin.systemd_service:
     name: mongod
+    enabled: true
     state: started
-    enabled: yes
 
-- name: Copy catalogue.js {{COMPONENT}}
-  copy:
-    src: catalogue.js
-    dest: /tmp
+- name: Apply config changes before seeding
+  ansible.builtin.meta: flush_handlers
 
-- name: Copy users.js {{COMPONENT}}
-  copy:
-    src: users.js
-    dest: /tmp
+- name: Wait for MongoDB to accept connections
+  ansible.builtin.wait_for:
+    port: 27017
+    timeout: 60
 
-- name: Load {{COMPONENT}} schema
-  shell: mongo < /tmp/{{ item }}.js
-  loop:
-    - catalogue
-    - users
+- name: List existing databases
+  ansible.builtin.command: mongosh --quiet --eval 'db.getMongo().getDBNames().join(",")'
+  register: mongodb_existing
+  changed_when: false
 
-- name: Restart {{COMPONENT}} Serive
-  systemd:
-    name: mongod
-    state: restarted
+- name: Create the seed directory
+  ansible.builtin.file:
+    path: "{{ mongodb_data_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Copy seed scripts
+  ansible.builtin.copy:
+    src: "{{ item }}.js"
+    dest: "{{ mongodb_data_dir }}/{{ item }}.js"
+    owner: root
+    group: root
+    mode: "0600"
+  loop: "{{ mongodb_seed_databases }}"
+
+- name: Seed databases that do not exist yet
+  ansible.builtin.command: mongosh --quiet --file {{ mongodb_data_dir }}/{{ item }}.js
+  loop: "{{ mongodb_seed_databases }}"
+  when: item not in mongodb_existing.stdout.split(',')
+  changed_when: true

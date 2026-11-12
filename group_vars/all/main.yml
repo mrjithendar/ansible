@@ -1,0 +1,43 @@
+---
+# ----- Shared settings for every RoboShop host -----------------------------
+
+roboshop_domain: roboshop.com
+aws_region: us-east-1
+
+# Every component the playbook knows about. A host's component is the first
+# of these that matches one of its inventory groups. Override with
+# -e roboshop_component=<name> for ansible-pull on localhost.
+roboshop_components:
+  - frontend
+  - mongodb
+  - rabbitmq
+  - redis
+  - mysql
+  - cart
+  - catalogue
+  - user
+  - shipping
+  - payment
+roboshop_component: "{{ (group_names | intersect(roboshop_components) | first) | default('') }}"
+
+app_user: roboshop
+app_base_dir: /opt/roboshop
+nodejs_stream: "20"
+
+# Where MySQL lives. "rds" = Aurora created by Terraform (default);
+# "self_hosted" = the mysql role on its own instance.
+roboshop_mysql_mode: rds
+
+# ----- Secrets ---------------------------------------------------------------
+# Real values live in group_vars/all/vault.yml, encrypted with ansible-vault.
+# See examples/vault.yml.example.
+rabbitmq_app_user: roboshop
+rabbitmq_app_password: "{{ vault_rabbitmq_app_password }}"
+shipping_db_user: shipping
+shipping_db_password: "{{ vault_shipping_db_password }}"
+mysql_root_password: "{{ vault_mysql_root_password }}"
+
+# Aurora master credentials come from AWS Secrets Manager (same secret
+# Terraform uses). Looked up on the controller only when needed.
+rds_admin_secret_id: rdscreds
+rds_admin_creds: "{{ lookup('amazon.aws.secretsmanager_secret', rds_admin_secret_id, region=aws_region) | from_json }}"

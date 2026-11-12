@@ -1,95 +1,54 @@
-- name: Setup RoboShop Project
-  gather_facts: yes
+---
+# RoboShop: one play per tier so data stores are up before the apps that
+# use them, and the frontend goes last.
+#
+#   ansible-playbook roboshop.yml                      # everything
+#   ansible-playbook roboshop.yml --limit cart          # one component
+#   ansible-pull -U <repo> -i localhost, roboshop.yml -e roboshop_component=cart
+
+- name: Wait for hosts and group them by component
   hosts: all
-  # roles:
-  #   - frontend
-  vars:
-    DOMAIN: roboshop.com
-  become: yes
-  # Become is nothing but a sudo in CLI, Also this become can be used in task level also
+  gather_facts: false
+  become: false
   tasks:
+    - name: Fail if the host has no known component
+      ansible.builtin.assert:
+        that: roboshop_component in roboshop_components
+        fail_msg: >-
+          {{ inventory_hostname }} is not in any RoboShop group
+          ({{ roboshop_components | join(', ') }}). Put it in one, or pass
+          -e roboshop_component=<name>.
+        quiet: true
 
-    # - name: Installing NGiNX Server
-    #   yum:
-    #     name: nginx
-    #     state: latest
-    # - name: Starting nginx services
-    #   systemd: 
-    #     daemon_reload: yes
-    #     enabled: yes
-    #     state: restarted
-    #     name: nginx
-    #   ignore_errors: yes
-    #   when: component == "frontend"
-    #   tags:
-    #     - frontend
+    - name: Wait until the host accepts SSH
+      ansible.builtin.wait_for_connection:
+        timeout: 300
 
-    - name: Load Frontend Role
-      import_role:
-        name: frontend
-      when: component == "frontend"
-      tags:
-        - frontend
+    - name: Add the host to its component group
+      ansible.builtin.group_by:
+        key: "{{ roboshop_component }}"
+      changed_when: false
 
-    - name: Load MongoDB Role
-      import_role:
-        name: mongodb
-      when: component == "mongodb"
-      tags:
-        - mongodb
-    
-    - name: Load MySQL Role
-      import_role:
-        name: mysql
-      when: component == "mysql"
-      tags:
-        - mysql
+- name: Data tier
+  hosts: mongodb:rabbitmq:redis:mysql
+  become: true
+  tasks:
+    - name: Apply the component role
+      ansible.builtin.include_role:
+        name: "{{ roboshop_component }}"
 
-    - name: Load Cart Role
-      import_role:
-        name: cart
-      when: component == "cart"
-      tags:
-        - cart
+- name: Application tier
+  hosts: catalogue:user:cart:shipping:payment
+  become: true
+  tasks:
+    - name: Apply the component role
+      ansible.builtin.include_role:
+        name: "{{ roboshop_component }}"
 
-    - name: Load Catalogue Role
-      import_role:
-        name: catalogue
-      when: component == "catalogue"
-      tags:
-        - catalogue
-
-    - name: Load User Role
-      import_role:
-        name: user
-      when: component == "user"
-      tags:
-        - user
-
-    - name: Load Shipping Role
-      import_role:
-        name: shipping
-      when: component == "shipping"
-      tags:
-        - shipping
-
-    - name: Load Payment Role
-      import_role:
-        name: payment
-      when: component == "payment"
-      tags:
-        - payment
-
-    - name: Load Redis Role
-      import_role:
-       name: redis
-      when: component == "redis"
-      tags:
-       - redis
-
-    - name: Load RabbitMQ Role
-      import_role:
-       name: rabbitmq
-      when: component == "rabbitmq"
-      tags:
-       - rabbitmq
+- name: Web tier
+  hosts: frontend
+  become: true
+  tasks:
+    - name: Apply the component role
+      ansible.builtin.include_role:
+        name: "{{ roboshop_component }}"

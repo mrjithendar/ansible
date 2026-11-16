@@ -62,7 +62,7 @@ ansible-playbook roboshop.yml --ask-vault-pass --limit cart   # one component
 On a single host without a controller:
 
 ```bash
-ansible-pull -U https://github.com/mrjithendar/Ansible.git -i localhost, \
+ansible-pull -U https://github.com/moks-tech/ansible.git -i localhost, \
   roboshop.yml -e roboshop_component=cart --ask-vault-pass
 ```
 
